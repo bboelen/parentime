@@ -1,28 +1,17 @@
 package be.atemi.decision.parentime.jenetics;
 
+import be.atemi.decision.parentime.model.Child;
 import be.atemi.decision.parentime.model.Family;
-import io.jenetics.BoundedGene;
+import io.jenetics.Gene;
 
-import java.util.Set;
-
-public final class FamilyGene implements BoundedGene<Family, FamilyGene> {
+public final class FamilyGene implements Gene<Family, FamilyGene> {
 
     private final Family _value;
-    private final Family[] _families;
+    private final Child _child;
 
-    private FamilyGene(final Family value, Set<Family> families) {
+    private FamilyGene(final Family value, final Child child) {
         _value = value;
-        _families = (Family[]) families.toArray();
-    }
-
-    @Override
-    public Family getMin() {
-        return (Family) _families[0];
-    }
-
-    @Override
-    public Family getMax() {
-        return (Family) _families[_families.length - 1];
+        _child = child;
     }
 
     @Override
@@ -38,5 +27,10 @@ public final class FamilyGene implements BoundedGene<Family, FamilyGene> {
     @Override
     public FamilyGene newInstance(Family value) {
         return null;
+    }
+
+    @Override
+    public boolean isValid() {
+        return _child.isMemberOf(_value);
     }
 }

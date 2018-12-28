@@ -26,6 +26,8 @@ public class Child implements Comparable<Child> {
         return families.contains(family);
     }
 
+    public Set<Family> getFamilies() { return families; }
+
     @Override
     public int compareTo(Child o) {
         return this.id.compareTo(o.id);
