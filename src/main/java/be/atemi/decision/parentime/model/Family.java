@@ -11,7 +11,11 @@ public class Family implements Comparable<Family> {
 
     private String name;
 
+    private Address address;
+
     private Set<Child> children = new HashSet<>();
+
+    private Set<Unavailability> unavailabilities = new HashSet<>();
 
     private Family(Integer id, String name) {
         this.id = id;
@@ -23,6 +27,10 @@ public class Family implements Comparable<Family> {
         this.children.add(child);
     }
 
+    public void addUnavailability(Unavailability unavailability) {
+        this.unavailabilities.add(unavailability);
+    }
+
     public boolean includes(Child child) {
         return children.contains(child);
     }
@@ -32,7 +40,9 @@ public class Family implements Comparable<Family> {
         return this.id.compareTo(o.id);
     }
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -40,5 +50,13 @@ public class Family implements Comparable<Family> {
 
     public static Family newInstance(String name) {
         return new Family(cursor++, name);
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 }

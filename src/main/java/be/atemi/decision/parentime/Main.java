@@ -1,48 +1,92 @@
 package be.atemi.decision.parentime;
 
-import be.atemi.decision.parentime.jenetics.FamilyChromosome;
-import io.jenetics.*;
-import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.util.Factory;
+import be.atemi.decision.parentime.constraint.Constraint;
+import be.atemi.decision.parentime.constraint.soft.FullNightMorningConstraint;
+import be.atemi.decision.parentime.jenetics.Timetable;
+import be.atemi.decision.parentime.model.Child;
+import be.atemi.decision.parentime.model.Family;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static be.atemi.decision.parentime.model.Unavailability.from;
 
 public class Main {
 
-    private static int D = 2;
-    private static int T = 2;
-    private static int[] C = {1};
-
-    private static int eval(final Genotype<BitGene> gt) {
-        return gt.getChromosome()
-                .as(BitChromosome.class)
-                .bitCount();
-    }
-
-    private static int evalGenotype(final Genotype<IntegerGene> genotype) {
-        int[] chromosome = genotype.getChromosome().as(IntegerChromosome.class).toArray();
-        return 0;
-    }
-
-
     public static void main(String... args) {
 
+        /**
+         * ----------------------------------------------------------------
+         * Definition of children.
+         * ----------------------------------------------------------------
+         */
 
+        Set<Child> children = new HashSet<>();
 
-        final Factory<Genotype<IntegerGene>> genotypeFactory = Genotype.of(FamilyChromosome.of(2, 2));
-        final Engine<IntegerGene, Integer> engine = Engine.builder(Main::evalGenotype, genotypeFactory).build();
-        final Genotype<IntegerGene> result = engine.stream().limit(1000).collect(EvolutionResult.toBestGenotype());
+        Child kevin = Child.newInstance("kevin");
+        Child brandon = Child.newInstance("brandon");
+        Child julien = Child.newInstance("julien");
 
-//        final Factory<Genotype<BitGene>> gtf =
-//                Genotype.of(BitChromosome.of(10, 0.5));
-//
-//        final Engine<BitGene, Integer> engine = Engine
-//                .builder(Main::eval, gtf)
-//                .build();
-//
-//        final Genotype<BitGene> result = engine.stream()
-//                .limit(1000)
-//                .collect(EvolutionResult.toBestGenotype());
+        children.add(kevin);
+        children.add(brandon);
+        children.add(julien);
 
-        System.out.println(result);
+        /**
+         * ----------------------------------------------------------------
+         * Definition of fraternal links.
+         * ----------------------------------------------------------------
+         */
+        Child.fraternize(kevin, brandon);
+
+        /**
+         * ----------------------------------------------------------------
+         * Definition of families.
+         * ----------------------------------------------------------------
+         */
+
+        Family bob = Family.newInstance("bob");
+        Family alice_cedric = Family.newInstance("alice - cédric");
+        Family pauline = Family.newInstance("pauline");
+
+        /**
+         * ----------------------------------------------------------------
+         * Definition of family relationships.
+         * ----------------------------------------------------------------
+         */
+
+        bob.addChild(kevin);
+        bob.addChild(brandon);
+        alice_cedric.addChild(kevin);
+        alice_cedric.addChild(brandon);
+        alice_cedric.addChild(julien);
+        pauline.addChild(julien);
+
+        /**
+         * ----------------------------------------------------------------
+         * Definition of availabilities.
+         * ----------------------------------------------------------------
+         */
+
+        bob.addUnavailability(from(0, 0).to(0, 7).recurrent());
+
+        /**
+         * ----------------------------------------------------------------
+         * Definition of constraints.
+         * ----------------------------------------------------------------
+         */
+
+        Set<Constraint> constraints = new HashSet<>();
+
+        //constraints.add(new MinTransitionConstraint());
+        //constraints.add(new FiftyFiftyConstraint());
+        constraints.add(new FullNightMorningConstraint());
+
+        /**
+         * ----------------------------------------------------------------
+         * Creation of the timetable.
+         * ----------------------------------------------------------------
+         */
+
+        Timetable.build(children, 8, 27, constraints);
     }
 }
