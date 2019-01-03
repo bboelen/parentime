@@ -1,22 +1,22 @@
 package be.atemi.decision.parentime.constraint;
 
-import be.atemi.decision.parentime.jenetics.FamilyChromosome;
-import be.atemi.decision.parentime.jenetics.FamilyGene;
+import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
+import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import io.jenetics.Genotype;
 
 public abstract class Constraint {
 
-    public int cost(final Genotype<FamilyGene> genotype) {
+    public int cost(final Genotype<StepfamilyGene> genotype) {
 
         int cost = 0;
 
-        FamilyChromosome[] chromosomes = new FamilyChromosome[genotype.length()];
+        StepfamilyChromosome[] chromosomes = new StepfamilyChromosome[genotype.length()];
         genotype.toSeq().toArray(chromosomes);
 
         for (int c = 0; c < chromosomes.length; c++) {
 
-            FamilyChromosome chromosome = chromosomes[c].as(FamilyChromosome.class);
-            FamilyGene[] genes = new FamilyGene[chromosome.timeslots() * chromosome.days()];
+            StepfamilyChromosome chromosome = chromosomes[c].as(StepfamilyChromosome.class);
+            StepfamilyGene[] genes = new StepfamilyGene[chromosome.timeslots() * chromosome.days()];
             chromosome.toSeq().toArray(genes);
 
             cost += cost(c, genes, chromosome.timeslots(), chromosome.days());
@@ -25,7 +25,7 @@ public abstract class Constraint {
         return cost * weight();
     }
 
-    public abstract int cost(int chromosomeIndex, FamilyGene[] genes, int timeslots, int days);
+    public abstract int cost(int chromosomeIndex, StepfamilyGene[] genes, int timeslots, int days);
 
     public abstract int weight();
 }

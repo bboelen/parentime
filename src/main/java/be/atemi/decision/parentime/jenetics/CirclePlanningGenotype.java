@@ -1,8 +1,7 @@
 package be.atemi.decision.parentime.jenetics;
 
 import be.atemi.decision.parentime.constraint.Constraint;
-import be.atemi.decision.parentime.helper.PrettyPrinter;
-import be.atemi.decision.parentime.model.Child;
+import be.atemi.decision.parentime.model.Circle;
 import io.jenetics.*;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -12,27 +11,27 @@ import io.jenetics.util.Factory;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class Timetable {
+public final class CirclePlanningGenotype {
 
     private static Set<Constraint> constraintsSet = null;
 
-    private static int fitness(final Genotype<FamilyGene> genotype) {
+    private static int fitness(final Genotype<StepfamilyGene> genotype) {
         int cost = constraintsSet.stream().mapToInt(constraint -> constraint.cost(genotype)).sum();
         //System.out.println(cost);
         return cost;
     }
 
-    public static void build(Set<Child> children, int timeslots, int days, Set<Constraint> constraints) {
+    public static BestCirclePlanningGenotype compute(Circle circle, int timeslots, int days, Set<Constraint> constraints) {
 
         constraintsSet = constraints;
 
-        final Set<FamilyChromosome> chromosomes = children.stream()
-                .map(child -> FamilyChromosome.of(child, timeslots, days)).collect(Collectors.toSet());
+        final Set<StepfamilyChromosome> chromosomes = circle.children().stream()
+                .map(child -> StepfamilyChromosome.of(child, timeslots, days)).collect(Collectors.toSet());
 
-        final Factory<Genotype<FamilyGene>> factory = Genotype.of(chromosomes);
+        final Factory<Genotype<StepfamilyGene>> factory = Genotype.of(chromosomes);
 
-        final Engine<FamilyGene, Integer> engine = Engine
-                .builder(Timetable::fitness, factory)
+        final Engine<StepfamilyGene, Integer> engine = Engine
+                .builder(CirclePlanningGenotype::fitness, factory)
                 .populationSize(1000)
                 .offspringSelector(new TournamentSelector<>(10))
                 .survivorsSelector(new EliteSelector<>(2))
@@ -45,12 +44,11 @@ public final class Timetable {
 
         final EvolutionStatistics<Integer, ?> statistics = EvolutionStatistics.ofNumber();
 
-        final Genotype<FamilyGene> result = engine.stream()
+        final Genotype<StepfamilyGene> result = engine.stream()
                 .limit(100)
                 .peek(statistics)
                 .collect(EvolutionResult.toBestGenotype());
 
-        System.out.println(statistics);
-        PrettyPrinter.print(result, timeslots, days);
+        return new BestCirclePlanningGenotype(result, statistics);
     }
 }

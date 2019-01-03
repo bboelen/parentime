@@ -1,7 +1,7 @@
 package be.atemi.decision.parentime.constraint.soft;
 
 import be.atemi.decision.parentime.constraint.SoftConstraint;
-import be.atemi.decision.parentime.jenetics.FamilyGene;
+import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class FiftyFiftyConstraint extends SoftConstraint {
 
     @Override
-    public int cost(int chromosomeIndex, FamilyGene[] genes, int timeslots, int days) {
+    public int cost(int chromosomeIndex, StepfamilyGene[] genes, int timeslots, int days) {
 
         Map<String, Integer> ratios = new HashMap();
 

@@ -1,17 +1,19 @@
 package be.atemi.decision.parentime.helper;
 
-import be.atemi.decision.parentime.jenetics.FamilyChromosome;
-import be.atemi.decision.parentime.jenetics.FamilyGene;
+import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
+import be.atemi.decision.parentime.jenetics.StepfamilyGene;
+import be.atemi.decision.parentime.model.Person;
 import io.jenetics.Genotype;
 
 public final class PrettyPrinter {
 
-    public static void print(Genotype<FamilyGene> genotype, int timeslots, int days) {
+    public static void print(Genotype<StepfamilyGene> genotype, int timeslots, int days) {
         genotype.toSeq().forEach(chromosome -> {
-            FamilyGene[] sequence = new FamilyGene[timeslots * days];
+            StepfamilyGene[] sequence = new StepfamilyGene[timeslots * days];
             chromosome.toSeq().toArray(sequence);
             cr();
-            System.out.println(String.format(" * custody schedule for %s", chromosome.as(FamilyChromosome.class).child().getName()));
+            Person child = chromosome.as(StepfamilyChromosome.class).child();
+            System.out.println(String.format(" * custody schedule for %s %s", child.getFirstName(), child.getLastName()));
             cr();
             print("");
             for (int i = 0; i < days; i++) {
