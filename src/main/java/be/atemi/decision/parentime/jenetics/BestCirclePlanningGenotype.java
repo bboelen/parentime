@@ -6,9 +6,9 @@ import io.jenetics.engine.EvolutionStatistics;
 public class BestCirclePlanningGenotype {
 
     private Genotype<StepfamilyGene> genotype;
-    private EvolutionStatistics<Integer, ?> statistics;
+    private EvolutionStatistics<Double, ?> statistics;
 
-    public BestCirclePlanningGenotype(Genotype<StepfamilyGene> genotype, EvolutionStatistics<Integer, ?> statistics) {
+    public BestCirclePlanningGenotype(Genotype<StepfamilyGene> genotype, EvolutionStatistics<Double, ?> statistics) {
         this.genotype = genotype;
         this.statistics = statistics;
     }
@@ -17,7 +17,7 @@ public class BestCirclePlanningGenotype {
         return genotype;
     }
 
-    public EvolutionStatistics<Integer, ?> getStatistics() {
+    public EvolutionStatistics<Double, ?> getStatistics() {
         return statistics;
     }
 }

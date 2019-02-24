@@ -6,6 +6,7 @@ import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
 import be.atemi.decision.parentime.model.Circle;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class DummyCirclePlanning extends Application {
@@ -21,8 +22,13 @@ public class DummyCirclePlanning extends Application {
                 DummyParentime.TIME_SLOTS, DummyParentime.DAYS, DummyParentime.constraints());
 
         CirclePlanning planning = new CirclePlanning(result.getGenotype(), dummyCircle.getStepfamilies());
+        AgendaGrid agendas = new AgendaGrid(dummyCircle);
 
-        primaryStage.setScene(new Scene(planning));
+        VBox container = new VBox();
+        container.getChildren().add(planning);
+        container.getChildren().add(agendas);
+
+        primaryStage.setScene(new Scene(container));
         primaryStage.show();
     }
 

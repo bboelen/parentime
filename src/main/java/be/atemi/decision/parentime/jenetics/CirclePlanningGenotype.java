@@ -15,8 +15,8 @@ public final class CirclePlanningGenotype {
 
     private static Set<Constraint> constraintsSet = null;
 
-    private static int fitness(final Genotype<StepfamilyGene> genotype) {
-        int cost = constraintsSet.stream().mapToInt(constraint -> constraint.cost(genotype)).sum();
+    private static double fitness(final Genotype<StepfamilyGene> genotype) {
+        double cost = constraintsSet.stream().mapToDouble(constraint -> constraint.weight() * constraint.cost(genotype)).sum();
         //System.out.println(cost);
         return cost;
     }
@@ -30,9 +30,9 @@ public final class CirclePlanningGenotype {
 
         final Factory<Genotype<StepfamilyGene>> factory = Genotype.of(chromosomes);
 
-        final Engine<StepfamilyGene, Integer> engine = Engine
+        final Engine<StepfamilyGene, Double> engine = Engine
                 .builder(CirclePlanningGenotype::fitness, factory)
-                .populationSize(1000)
+                .populationSize(2000)
                 .offspringSelector(new TournamentSelector<>(10))
                 .survivorsSelector(new EliteSelector<>(2))
                 .alterers(
@@ -42,10 +42,10 @@ public final class CirclePlanningGenotype {
                 .minimizing()
                 .build();
 
-        final EvolutionStatistics<Integer, ?> statistics = EvolutionStatistics.ofNumber();
+        final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
 
         final Genotype<StepfamilyGene> result = engine.stream()
-                .limit(100)
+                .limit(200)
                 .peek(statistics)
                 .collect(EvolutionResult.toBestGenotype());
 

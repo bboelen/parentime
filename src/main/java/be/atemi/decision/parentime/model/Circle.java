@@ -44,4 +44,10 @@ public class Circle implements Serializable {
         stepfamilies.forEach(stepfamily -> stepfamily.getTutors().forEach(person -> children.addAll(person.getChildren())));
         return children;
     }
+
+    public Set<Person> tutors() {
+        Set<Person> tutors = new HashSet<>();
+        stepfamilies.forEach(stepfamily -> stepfamily.getTutors().forEach(person -> tutors.add(person)));
+        return tutors;
+    }
 }

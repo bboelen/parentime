@@ -1,11 +1,12 @@
 package be.atemi.decision.parentime.jenetics;
 
 import be.atemi.decision.parentime.model.Person;
+import be.atemi.decision.parentime.model.Timable;
 import io.jenetics.AbstractChromosome;
 import io.jenetics.Chromosome;
 import io.jenetics.util.ISeq;
 
-public class StepfamilyChromosome extends AbstractChromosome<StepfamilyGene> {
+public class StepfamilyChromosome extends AbstractChromosome<StepfamilyGene> implements Timable {
 
     private final Person _child;
     private final int _timeslots;

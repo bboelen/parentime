@@ -27,6 +27,8 @@ public class Person {
 
     private LocalDate dateOfBirth;
 
+    private Agenda agenda;
+
     private Person(Integer id, String firstName, String lastName, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
@@ -101,5 +103,13 @@ public class Person {
 
     public static Person newInstance(String firstName, String lastName, LocalDate dateOfBirth) {
         return new Person(cursor++, firstName, lastName, dateOfBirth);
+    }
+
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
     }
 }
