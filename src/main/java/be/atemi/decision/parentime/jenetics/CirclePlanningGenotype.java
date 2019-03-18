@@ -6,6 +6,7 @@ import io.jenetics.*;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.engine.Limits;
 import io.jenetics.util.Factory;
 
 import java.util.Set;
@@ -15,9 +16,14 @@ public final class CirclePlanningGenotype {
 
     private static Set<Constraint> constraintsSet = null;
 
+    private static double MAX_COST = 0;
+
     private static double fitness(final Genotype<StepfamilyGene> genotype) {
-        double cost = constraintsSet.stream().mapToDouble(constraint -> constraint.weight() * constraint.cost(genotype)).sum();
+        double cost = constraintsSet.stream().mapToDouble(constraint -> constraint.weightedCost(genotype)).sum();
         //System.out.println(cost);
+
+        //if(cost > MAX_COST) MAX_COST = cost;
+
         return cost;
     }
 
@@ -32,12 +38,12 @@ public final class CirclePlanningGenotype {
 
         final Engine<StepfamilyGene, Double> engine = Engine
                 .builder(CirclePlanningGenotype::fitness, factory)
-                .populationSize(2000)
-                .offspringSelector(new TournamentSelector<>(10))
-                .survivorsSelector(new EliteSelector<>(2))
+                .populationSize(10)
+                .offspringSelector(new StochasticUniversalSelector<>())
+                .survivorsSelector(new StochasticUniversalSelector<>())
                 .alterers(
-                        new SwapMutator<>(0.02),
-                        new MultiPointCrossover<>(0.50, 6)
+                        new SwapMutator<>(0.1),
+                        new MultiPointCrossover<>(0.50, 3)
                 )
                 .minimizing()
                 .build();
@@ -45,9 +51,11 @@ public final class CirclePlanningGenotype {
         final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
 
         final Genotype<StepfamilyGene> result = engine.stream()
-                .limit(200)
+                .limit(Limits.bySteadyFitness(100))
                 .peek(statistics)
                 .collect(EvolutionResult.toBestGenotype());
+
+        System.out.println("-------------- MAX COST = " + MAX_COST);
 
         return new BestCirclePlanningGenotype(result, statistics);
     }

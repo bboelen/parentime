@@ -3,12 +3,9 @@ package be.atemi.decision.parentime.constraint.hard;
 import be.atemi.decision.parentime.constraint.HardConstraint;
 import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
-import be.atemi.decision.parentime.model.Agenda;
-import be.atemi.decision.parentime.model.Person;
-import be.atemi.decision.parentime.model.Stepfamily;
 import io.jenetics.Genotype;
 
-public class AvailabilityConstraint extends HardConstraint {
+public class FullNightMorningConstraint extends HardConstraint {
 
     @Override
     public double cost(Genotype<StepfamilyGene> genotype) {
@@ -25,22 +22,15 @@ public class AvailabilityConstraint extends HardConstraint {
             chromosome.toSeq().toArray(genes);
 
             for (int d = 0; d < chromosome.days(); d++) {
-                for (int t = 0; t < chromosome.timeslots(); t++) {
 
-                    Stepfamily stepfamily = chromosome.getGene(t + d * chromosome.timeslots()).getAllele();
+                int mIdx = d * chromosome.timeslots();
+                int nIdx = d != 0 ? d * chromosome.timeslots() - 1 : chromosome.days() * chromosome.timeslots() - 1;
 
-                    boolean isAvailable = true;
+                int a = chromosome.getGene(mIdx).getAllele().getId();
+                int b = chromosome.getGene(nIdx).getAllele().getId();
 
-                    for (Person person : stepfamily.getTutors()) {
-
-                        if (person.getAgenda().getEntry(d, t).equals(Agenda.Entry.FIXED_UNAVAILABILITY)) {
-                            isAvailable = false;
-                        }
-                    }
-
-                    if (!isAvailable) {
-                        conflicts++;
-                    }
+                if (a != b) {
+                    conflicts++;
                 }
             }
         }
@@ -50,6 +40,6 @@ public class AvailabilityConstraint extends HardConstraint {
 
     @Override
     public int weight() {
-        return 1000;
+        return 2000;
     }
 }

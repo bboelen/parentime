@@ -2,7 +2,9 @@ package be.atemi.decision.parentime;
 
 import be.atemi.decision.parentime.constraint.Constraint;
 import be.atemi.decision.parentime.constraint.hard.AvailabilityConstraint;
-import be.atemi.decision.parentime.constraint.soft.FiftyFiftyConstraint;
+import be.atemi.decision.parentime.constraint.hard.FullNightMorningConstraint;
+import be.atemi.decision.parentime.constraint.hard.RatioConstraint;
+import be.atemi.decision.parentime.constraint.soft.MinTransitionConstraint;
 import be.atemi.decision.parentime.helper.PrettyPrinter;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
@@ -72,14 +74,14 @@ public class DummyParentime {
         fixed.setEntry(0, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
         fixed.setEntry(0, 3, Agenda.Entry.FIXED_UNAVAILABILITY);
         fixed.setEntry(1, 0, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(1, 1, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(1, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(1, 3, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(2, 0, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(2, 1, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(2, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(2, 3, Agenda.Entry.FIXED_UNAVAILABILITY);
-//        fixed.setEntry(3, 0, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(1, 1, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(1, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(1, 3, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(2, 0, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(2, 1, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(2, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(2, 3, Agenda.Entry.FIXED_UNAVAILABILITY);
+        fixed.setEntry(3, 0, Agenda.Entry.FIXED_UNAVAILABILITY);
         fixed.setEntry(3, 1, Agenda.Entry.FIXED_UNAVAILABILITY);
         fixed.setEntry(3, 2, Agenda.Entry.FIXED_UNAVAILABILITY);
 
@@ -133,11 +135,10 @@ public class DummyParentime {
          */
         Set<Constraint> constraints = new HashSet<>();
 
-        //constraints.add(new MinTransitionConstraint());
-        //constraints.add(new FiftyFiftyConstraint());
+       // constraints.add(new AvailabilityConstraint());
         //constraints.add(new FullNightMorningConstraint());
-
-        constraints.add(new AvailabilityConstraint());
+        constraints.add(new RatioConstraint());
+        //constraints.add(new MinTransitionConstraint());
 
         return constraints;
     }
