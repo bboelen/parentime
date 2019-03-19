@@ -5,13 +5,14 @@ import be.atemi.decision.parentime.model.Stepfamily;
 import io.jenetics.Gene;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.Set;
 
 import static io.jenetics.util.RandomRegistry.getRandom;
 
-public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene> {
+public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene>, Comparable<StepfamilyGene> {
 
     private final Stepfamily _stepfamily;
     private final Person _child;
@@ -80,5 +81,10 @@ public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene> {
         stepfamilies.toArray(families);
         int index = random.nextInt(families.length);
         return families[index];
+    }
+
+    @Override
+    public int compareTo(@NotNull StepfamilyGene o) {
+        return _stepfamily.getId().compareTo(o._stepfamily.getId());
     }
 }

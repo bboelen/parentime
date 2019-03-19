@@ -135,9 +135,9 @@ public class DummyParentime {
          */
         Set<Constraint> constraints = new HashSet<>();
 
-       // constraints.add(new AvailabilityConstraint());
+        constraints.add(new AvailabilityConstraint());
         //constraints.add(new FullNightMorningConstraint());
-        constraints.add(new RatioConstraint());
+        //constraints.add(new RatioConstraint());
         //constraints.add(new MinTransitionConstraint());
 
         return constraints;
@@ -155,5 +155,7 @@ public class DummyParentime {
         System.out.println(result.getStatistics());
 
         PrettyPrinter.print(result.getGenotype(), TIME_SLOTS, DAYS);
+
+        PrettyPrinter.toLatexFigure(result.getGenotype(), TIME_SLOTS, DAYS);
     }
 }
