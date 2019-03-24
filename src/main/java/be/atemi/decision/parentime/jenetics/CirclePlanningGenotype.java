@@ -38,9 +38,9 @@ public final class CirclePlanningGenotype {
 
         final Engine<StepfamilyGene, Double> engine = Engine
                 .builder(CirclePlanningGenotype::fitness, factory)
-                .populationSize(10)
-                .offspringSelector(new StochasticUniversalSelector<>())
-                .survivorsSelector(new StochasticUniversalSelector<>())
+                .populationSize(300)
+                .offspringSelector(new TournamentSelector<>(4))
+                .survivorsSelector(new EliteSelector<>(2))
                 .alterers(
                         new SwapMutator<>(0.1),
                         new MultiPointCrossover<>(0.50, 3)
@@ -51,7 +51,7 @@ public final class CirclePlanningGenotype {
         final EvolutionStatistics<Double, ?> statistics = EvolutionStatistics.ofNumber();
 
         final Genotype<StepfamilyGene> result = engine.stream()
-                .limit(Limits.bySteadyFitness(100))
+                .limit(Limits.bySteadyFitness(500))
                 .peek(statistics)
                 .collect(EvolutionResult.toBestGenotype());
 

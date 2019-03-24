@@ -5,7 +5,6 @@ import be.atemi.decision.parentime.model.Timable;
 import io.jenetics.AbstractChromosome;
 import io.jenetics.Chromosome;
 import io.jenetics.util.ISeq;
-import org.jetbrains.annotations.NotNull;
 
 public class StepfamilyChromosome extends AbstractChromosome<StepfamilyGene> implements Timable, Comparable<StepfamilyChromosome> {
 
@@ -52,7 +51,7 @@ public class StepfamilyChromosome extends AbstractChromosome<StepfamilyGene> imp
     }
 
     @Override
-    public int compareTo(@NotNull StepfamilyChromosome o) {
+    public int compareTo(StepfamilyChromosome o) {
         return this._child.getId().compareTo(o._child.getId());
     }
 }

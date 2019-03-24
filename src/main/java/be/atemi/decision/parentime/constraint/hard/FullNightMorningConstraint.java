@@ -7,6 +7,8 @@ import io.jenetics.Genotype;
 
 public class FullNightMorningConstraint extends HardConstraint {
 
+    public static int MAX = 0;
+
     @Override
     public double cost(Genotype<StepfamilyGene> genotype) {
 
@@ -35,7 +37,16 @@ public class FullNightMorningConstraint extends HardConstraint {
             }
         }
 
+        if(conflicts > MAX) {
+            MAX = conflicts;
+        }
+
         return conflicts;
+    }
+
+    @Override
+    public int max() {
+        return 28;
     }
 
     @Override

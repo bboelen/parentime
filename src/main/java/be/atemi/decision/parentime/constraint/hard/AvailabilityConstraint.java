@@ -10,6 +10,8 @@ import io.jenetics.Genotype;
 
 public class AvailabilityConstraint extends HardConstraint {
 
+    public static int MAX = 0;
+
     @Override
     public double cost(Genotype<StepfamilyGene> genotype) {
 
@@ -45,7 +47,16 @@ public class AvailabilityConstraint extends HardConstraint {
             }
         }
 
+        if(conflicts > MAX) {
+            MAX = conflicts;
+        }
+
         return conflicts;
+    }
+
+    @Override
+    public int max() {
+        return 32;
     }
 
     @Override

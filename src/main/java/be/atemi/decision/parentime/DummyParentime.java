@@ -136,9 +136,9 @@ public class DummyParentime {
         Set<Constraint> constraints = new HashSet<>();
 
         constraints.add(new AvailabilityConstraint());
-        //constraints.add(new FullNightMorningConstraint());
-        //constraints.add(new RatioConstraint());
-        //constraints.add(new MinTransitionConstraint());
+        constraints.add(new FullNightMorningConstraint());
+        constraints.add(new RatioConstraint());
+        constraints.add(new MinTransitionConstraint());
 
         return constraints;
     }
@@ -151,6 +151,11 @@ public class DummyParentime {
          * ----------------------------------------------------------------
          */
         BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(dummyCircle(), TIME_SLOTS, DAYS, constraints());
+
+        System.out.println("--------------------> AvailabilityConstraint     MAX : " + AvailabilityConstraint.MAX);
+        System.out.println("--------------------> FullNightMorningConstraint MAX : " + FullNightMorningConstraint.MAX);
+        System.out.println("--------------------> RatioConstraint            MAX : " + RatioConstraint.MAX);
+        System.out.println("--------------------> MinTransitionConstraint    MAX : " + MinTransitionConstraint.MAX);
 
         System.out.println(result.getStatistics());
 

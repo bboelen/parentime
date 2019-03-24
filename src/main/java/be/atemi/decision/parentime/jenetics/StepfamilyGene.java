@@ -5,7 +5,6 @@ import be.atemi.decision.parentime.model.Stepfamily;
 import io.jenetics.Gene;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.Set;
@@ -84,7 +83,7 @@ public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene>, C
     }
 
     @Override
-    public int compareTo(@NotNull StepfamilyGene o) {
+    public int compareTo(StepfamilyGene o) {
         return _stepfamily.getId().compareTo(o._stepfamily.getId());
     }
 }

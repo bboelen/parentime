@@ -7,6 +7,7 @@ import io.jenetics.Genotype;
 
 public class MinTransitionConstraint extends SoftConstraint {
 
+    public static int MAX = 0;
 
     @Override
     public double cost(Genotype<StepfamilyGene> genotype) {
@@ -26,43 +27,35 @@ public class MinTransitionConstraint extends SoftConstraint {
 
             Integer previousFamily = null;
 
-            for (int i = 0; i < genes.length; i++) {
+            for (int d = 0; d < chromosome.days(); d++) {
+                for (int t = 0; t < chromosome.timeslots(); t++) {
 
-                if (previousFamily == null) {
-                    previousFamily = genes[i].getAllele().getId();
-                } else if (!genes[i].getAllele().getId().equals(previousFamily)) {
-                    cost++;
-                    previousFamily = genes[i].getAllele().getId();
+                    if (previousFamily == null) {
+                        previousFamily = chromosome.getGene(t + d * chromosome.timeslots()).getAllele().getId();
+                    } else if (!chromosome.getGene(t + d * chromosome.timeslots()).getAllele().getId().equals(previousFamily)) {
+                        cost++;
+                        previousFamily = chromosome.getGene(t + d * chromosome.timeslots()).getAllele().getId();
+                    }
                 }
             }
 
             conflicts += cost;
         }
 
+        if (conflicts > MAX) {
+            MAX = conflicts;
+        }
+
         return conflicts;
     }
 
     @Override
-    public int weight() {
-        return 200;
+    public int max() {
+        return 28;
     }
 
-
-    //    @Override
-//    public int cost(int chromosomeIndex, StepfamilyGene[] genes, int timeslots, int days) {
-//
-//        int cost = 0;
-//
-//        Integer previousFamily = null;
-//
-//        for (int i = 0; i < genes.length; i++) {
-//
-//            if (!genes[i].getAllele().getId().equals(previousFamily)) {
-//                cost++;
-//                previousFamily = genes[i].getAllele().getId();
-//            }
-//        }
-//
-//        return cost > 0 ? 1 : 0;
-//    }
+    @Override
+    public int weight() {
+        return 100;
+    }
 }

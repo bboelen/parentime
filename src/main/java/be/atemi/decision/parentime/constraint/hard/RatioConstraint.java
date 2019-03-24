@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class RatioConstraint extends HardConstraint {
 
+    public static int MAX = 0;
+
     @Override
     public double cost(Genotype<StepfamilyGene> genotype) {
 
@@ -40,14 +42,23 @@ public class RatioConstraint extends HardConstraint {
             int cost = -1;
 
             for (Map.Entry<Integer, Integer> entry : ratios.entrySet()) {
-                cost = (cost == -1) ? entry.getValue() : (cost - entry.getValue() == 0 ? 0 : 1);
+                cost = (cost == -1) ? entry.getValue() : (cost - entry.getValue());
 
             }
 
             conflicts += Math.abs(cost);
         }
 
+        if(conflicts > MAX) {
+            MAX = conflicts;
+        }
+
         return conflicts;
+    }
+
+    @Override
+    public int max() {
+        return 112;
     }
 
     @Override
