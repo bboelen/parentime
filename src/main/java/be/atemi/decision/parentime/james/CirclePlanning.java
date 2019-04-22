@@ -1,5 +1,7 @@
 package be.atemi.decision.parentime.james;
 
+import be.atemi.decision.parentime.james.generator.RandomCirclePlanningSolutionGenerator;
+import be.atemi.decision.parentime.james.neighbourhood.CirclePlanning2OptNeighbourhood;
 import be.atemi.decision.parentime.model.Circle;
 import org.jamesframework.core.problems.GenericProblem;
 import org.jamesframework.core.problems.Problem;
@@ -13,7 +15,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public final class CirclePlanningSubsetSolution {
+public final class CirclePlanning {
 
     public static BestCirclePlanningSolution compute(Circle circle, int days, int timeslots, Set<Constraint> constraints, int maxShake, int timeWithoutImprovementLimit) {
 

@@ -2,7 +2,7 @@ package be.atemi.decision.parentime;
 
 import be.atemi.decision.parentime.helper.PrettyPrinter;
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
-import be.atemi.decision.parentime.james.CirclePlanningSubsetSolution;
+import be.atemi.decision.parentime.james.CirclePlanning;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.constraint.Constraint;
@@ -196,7 +196,7 @@ public class DummyParentime {
          * Computation of the circle planning (VNS).
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningSolution result = CirclePlanningSubsetSolution.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 10, 10);
+        BestCirclePlanningSolution result = CirclePlanning.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 10, 10);
 
         PrettyPrinter.print(result, TIME_SLOTS, DAYS);
 

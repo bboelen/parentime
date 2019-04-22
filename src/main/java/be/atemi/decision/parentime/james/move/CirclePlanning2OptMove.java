@@ -1,5 +1,6 @@
-package be.atemi.decision.parentime.james;
+package be.atemi.decision.parentime.james.move;
 
+import be.atemi.decision.parentime.james.CirclePlanningSolution;
 import be.atemi.decision.parentime.model.Person;
 import org.jamesframework.core.search.neigh.Move;
 

@@ -1,6 +1,8 @@
-package be.atemi.decision.parentime.james;
+package be.atemi.decision.parentime.james.generator;
 
 import be.atemi.decision.parentime.helper.RandomStepfamilySelector;
+import be.atemi.decision.parentime.james.CirclePlanningData;
+import be.atemi.decision.parentime.james.CirclePlanningSolution;
 import be.atemi.decision.parentime.model.Person;
 import be.atemi.decision.parentime.model.Stepfamily;
 import org.jamesframework.core.problems.sol.RandomSolutionGenerator;

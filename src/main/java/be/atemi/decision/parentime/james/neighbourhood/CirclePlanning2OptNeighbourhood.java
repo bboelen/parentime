@@ -1,5 +1,7 @@
-package be.atemi.decision.parentime.james;
+package be.atemi.decision.parentime.james.neighbourhood;
 
+import be.atemi.decision.parentime.james.CirclePlanningSolution;
+import be.atemi.decision.parentime.james.move.CirclePlanning2OptMove;
 import org.jamesframework.core.search.neigh.Move;
 import org.jamesframework.core.search.neigh.Neighbourhood;
 
