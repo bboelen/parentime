@@ -1,5 +1,6 @@
 package be.atemi.decision.parentime.jenetics;
 
+import be.atemi.decision.parentime.helper.RandomStepfamilySelector;
 import be.atemi.decision.parentime.model.Person;
 import be.atemi.decision.parentime.model.Stepfamily;
 import io.jenetics.Gene;
@@ -28,7 +29,7 @@ public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene>, C
 
     @Override
     public StepfamilyGene newInstance() {
-        return StepfamilyGene.of(nextFamily(getRandom(), _child), _child);
+        return StepfamilyGene.of(RandomStepfamilySelector.nextFamily(getRandom(), _child), _child);
     }
 
     @Override
@@ -61,25 +62,7 @@ public final class StepfamilyGene implements Gene<Stepfamily, StepfamilyGene>, C
 
     static ISeq<StepfamilyGene> seq(final Person child, final int timeslots, final int days) {
         final Random r = getRandom();
-        return MSeq.<StepfamilyGene>ofLength(timeslots * days).fill(() -> new StepfamilyGene(nextFamily(r, child), child)).toISeq();
-    }
-
-    /**
-     * Returns a pseudo-random, uniformly distributed family a family of which the child is a member..
-     *
-     * @param random the random engine to use for calculating the random int
-     *               value
-     * @param child  the child concerned by the family*
-     * @return a random family responsible for the {@code child}
-     * @throws NullPointerException if the given {@code random}
-     *                              engine is {@code null} or if the given {@code child} is {@code null}.
-     */
-    static Stepfamily nextFamily(final Random random, final Person child) {
-        Set<Stepfamily> stepfamilies = child.stepfamilies();
-        Stepfamily[] families = new Stepfamily[stepfamilies.size()];
-        stepfamilies.toArray(families);
-        int index = random.nextInt(families.length);
-        return families[index];
+        return MSeq.<StepfamilyGene>ofLength(timeslots * days).fill(() -> new StepfamilyGene(RandomStepfamilySelector.nextFamily(r, child), child)).toISeq();
     }
 
     @Override

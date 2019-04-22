@@ -19,7 +19,7 @@ public class DummyCirclePlanning extends Application {
         Circle dummyCircle = DummyParentime.dummyCircle();
 
         BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(dummyCircle,
-                DummyParentime.TIME_SLOTS, DummyParentime.DAYS, DummyParentime.constraints());
+                DummyParentime.TIME_SLOTS, DummyParentime.DAYS, DummyParentime.geneticAlgorithmConstraints());
 
         CirclePlanning planning = new CirclePlanning(result.getGenotype(), dummyCircle.getStepfamilies());
         AgendaGrid agendas = new AgendaGrid(dummyCircle);

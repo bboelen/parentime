@@ -1,6 +1,6 @@
-package be.atemi.decision.parentime.constraint.soft;
+package be.atemi.decision.parentime.jenetics.constraint.soft;
 
-import be.atemi.decision.parentime.constraint.SoftConstraint;
+import be.atemi.decision.parentime.jenetics.constraint.SoftConstraint;
 import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import io.jenetics.Genotype;

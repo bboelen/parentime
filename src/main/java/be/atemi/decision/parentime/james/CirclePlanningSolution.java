@@ -19,8 +19,24 @@ public class CirclePlanningSolution extends Solution {
         return new CirclePlanningSolution(new HashMap<>(deltaStructure));
     }
 
+    public Set<Person> children() {
+        return deltaStructure.keySet();
+    }
+
+    /**
+     * @return days * timeslots size.
+     */
+    public int size() {
+        Person first = deltaStructure.keySet().iterator().next();
+        return deltaStructure.get(first) != null ? deltaStructure.get(first).size() : 0;
+    }
+
     public void swapStepfamilies(Person child, int i, int j) {
         Collections.swap(deltaStructure.get(child), i, j);
+    }
+
+    public Map<Person, List<Stepfamily>> getDeltaStructure() {
+        return deltaStructure;
     }
 
     @Override

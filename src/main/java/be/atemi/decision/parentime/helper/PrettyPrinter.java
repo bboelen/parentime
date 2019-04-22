@@ -1,5 +1,7 @@
 package be.atemi.decision.parentime.helper;
 
+import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
+import be.atemi.decision.parentime.james.CirclePlanningSolution;
 import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import be.atemi.decision.parentime.model.Person;
@@ -45,6 +47,27 @@ public final class PrettyPrinter {
                 cr();
             }
         });
+    }
+
+    public static void print(BestCirclePlanningSolution solution, int timeslots, int days) {
+        for (Person child : solution.getBestSolution().getDeltaStructure().keySet()) {
+            cr();
+            System.out.println(String.format(" * custody schedule for %s %s", child.getFirstName(), child.getLastName()));
+            cr();
+            print("");
+            for (int i = 0; i < days; i++) {
+                print(String.format("[    day %s    ]", i + 1));
+            }
+            cr();
+            cr();
+            for (int i = 0; i < timeslots; i++) {
+                print(String.format("timeslot %s    |", String.format("%02d", i)));
+                for (int j = 0; j < days; j++) {
+                    print(solution.getBestSolution().getDeltaStructure().get(child).get(i + j * timeslots).getName());
+                }
+                cr();
+            }
+        }
     }
 
     public static void toLatexFigure(Genotype<StepfamilyGene> genotype, int timeslots, int days) {

@@ -1,11 +1,14 @@
-package be.atemi.decision.parentime.constraint.hard;
+package be.atemi.decision.parentime.jenetics.constraint.hard;
 
-import be.atemi.decision.parentime.constraint.HardConstraint;
+import be.atemi.decision.parentime.jenetics.constraint.HardConstraint;
 import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import io.jenetics.Genotype;
 
-public class FullNightMorningConstraint extends HardConstraint {
+import java.util.HashMap;
+import java.util.Map;
+
+public class RatioConstraint extends HardConstraint {
 
     public static int MAX = 0;
 
@@ -23,18 +26,27 @@ public class FullNightMorningConstraint extends HardConstraint {
             StepfamilyGene[] genes = new StepfamilyGene[chromosome.timeslots() * chromosome.days()];
             chromosome.toSeq().toArray(genes);
 
-            for (int d = 0; d < chromosome.days(); d++) {
+            Map<Integer, Integer> ratios = new HashMap<>();
 
-                int mIdx = d * chromosome.timeslots();
-                int nIdx = d != 0 ? d * chromosome.timeslots() - 1 : chromosome.days() * chromosome.timeslots() - 1;
+            for (int i = 0; i < genes.length; i++) {
 
-                int a = chromosome.getGene(mIdx).getAllele().getId();
-                int b = chromosome.getGene(nIdx).getAllele().getId();
+                int id = genes[i].getAllele().getId();
 
-                if (a != b) {
-                    conflicts++;
+                if (!ratios.containsKey(id)) {
+                    ratios.put(id, 1);
                 }
+
+                ratios.put(id, ratios.get(id) + 1);
             }
+
+            int cost = -1;
+
+            for (Map.Entry<Integer, Integer> entry : ratios.entrySet()) {
+                cost = (cost == -1) ? entry.getValue() : (cost - entry.getValue());
+
+            }
+
+            conflicts += Math.abs(cost);
         }
 
         if(conflicts > MAX) {
@@ -46,11 +58,11 @@ public class FullNightMorningConstraint extends HardConstraint {
 
     @Override
     public int max() {
-        return 28;
+        return 112;
     }
 
     @Override
     public int weight() {
-        return 2000;
+        return 1000;
     }
 }

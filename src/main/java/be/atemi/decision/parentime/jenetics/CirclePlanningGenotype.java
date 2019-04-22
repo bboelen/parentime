@@ -1,6 +1,6 @@
 package be.atemi.decision.parentime.jenetics;
 
-import be.atemi.decision.parentime.constraint.Constraint;
+import be.atemi.decision.parentime.jenetics.constraint.Constraint;
 import be.atemi.decision.parentime.model.Circle;
 import io.jenetics.*;
 import io.jenetics.engine.Engine;

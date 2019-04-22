@@ -1,4 +1,4 @@
-package be.atemi.decision.parentime.constraint;
+package be.atemi.decision.parentime.jenetics.constraint;
 
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import io.jenetics.Genotype;

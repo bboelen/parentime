@@ -1,13 +1,15 @@
 package be.atemi.decision.parentime;
 
-import be.atemi.decision.parentime.constraint.Constraint;
-import be.atemi.decision.parentime.constraint.hard.AvailabilityConstraint;
-import be.atemi.decision.parentime.constraint.hard.FullNightMorningConstraint;
-import be.atemi.decision.parentime.constraint.hard.RatioConstraint;
-import be.atemi.decision.parentime.constraint.soft.MinTransitionConstraint;
 import be.atemi.decision.parentime.helper.PrettyPrinter;
+import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
+import be.atemi.decision.parentime.james.CirclePlanningSubsetSolution;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
+import be.atemi.decision.parentime.jenetics.constraint.Constraint;
+import be.atemi.decision.parentime.jenetics.constraint.hard.AvailabilityConstraint;
+import be.atemi.decision.parentime.jenetics.constraint.hard.FullNightMorningConstraint;
+import be.atemi.decision.parentime.jenetics.constraint.hard.RatioConstraint;
+import be.atemi.decision.parentime.jenetics.constraint.soft.MinTransitionConstraint;
 import be.atemi.decision.parentime.model.Agenda;
 import be.atemi.decision.parentime.model.Circle;
 import be.atemi.decision.parentime.model.Person;
@@ -126,11 +128,11 @@ public class DummyParentime {
         return circle;
     }
 
-    public static Set<Constraint> constraints() {
+    public static Set<Constraint> geneticAlgorithmConstraints() {
 
         /**
          * ----------------------------------------------------------------
-         * Definition of constraints.
+         * Definition of geneticAlgorithmConstraints.
          * ----------------------------------------------------------------
          */
         Set<Constraint> constraints = new HashSet<>();
@@ -143,14 +145,37 @@ public class DummyParentime {
         return constraints;
     }
 
-    public static void main(String... args) {
+    public static Set<org.jamesframework.core.problems.constraints.Constraint> variableNeighbourhoodSearchConstraints() {
 
         /**
          * ----------------------------------------------------------------
-         * Computation of the circle planning.
+         * Definition of variableNeighbourhoodSearchConstraints.
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(dummyCircle(), TIME_SLOTS, DAYS, constraints());
+
+        Set<org.jamesframework.core.problems.constraints.Constraint> constraints = new HashSet<>();
+
+     //   constraints.add(new be.atemi.decision.parentime.james.constraint.hard.FullNightMorningConstraint());
+
+        return constraints;
+
+    }
+
+    public static void main(String... args) {
+
+        //geneticAlgorithmCompute();
+        variableNeighbourhoodSearchCompute();
+
+    }
+
+    private static void geneticAlgorithmCompute() {
+
+        /**
+         * ----------------------------------------------------------------
+         * Computation of the circle planning (GA).
+         * ----------------------------------------------------------------
+         */
+        BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(dummyCircle(), TIME_SLOTS, DAYS, geneticAlgorithmConstraints());
 
         System.out.println("--------------------> AvailabilityConstraint     MAX : " + AvailabilityConstraint.MAX);
         System.out.println("--------------------> FullNightMorningConstraint MAX : " + FullNightMorningConstraint.MAX);
@@ -162,5 +187,23 @@ public class DummyParentime {
         PrettyPrinter.print(result.getGenotype(), TIME_SLOTS, DAYS);
 
         PrettyPrinter.toLatexFigure(result.getGenotype(), TIME_SLOTS, DAYS);
+    }
+
+    private static void variableNeighbourhoodSearchCompute() {
+
+        /**
+         * ----------------------------------------------------------------
+         * Computation of the circle planning (VNS).
+         * ----------------------------------------------------------------
+         */
+        BestCirclePlanningSolution result = CirclePlanningSubsetSolution.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 10, 10);
+
+        PrettyPrinter.print(result, TIME_SLOTS, DAYS);
+
+        // print results
+//        if (result.getBestSolution() != null) {
+//            System.out.println();
+//        }
+
     }
 }
