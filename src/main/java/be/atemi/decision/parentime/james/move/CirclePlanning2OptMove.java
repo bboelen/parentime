@@ -1,5 +1,7 @@
 package be.atemi.decision.parentime.james.move;
 
+import be.atemi.decision.parentime.helper.PrettyPrinter;
+import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
 import be.atemi.decision.parentime.james.CirclePlanningSolution;
 import be.atemi.decision.parentime.model.Person;
 import org.jamesframework.core.search.neigh.Move;
@@ -38,10 +40,11 @@ public class CirclePlanning2OptMove implements Move<CirclePlanningSolution> {
 
     @Override
     public void apply(CirclePlanningSolution solution) {
+
         // reverse subpath
         int start = i;
         int stop = j;
-        int n = solution.getDeltaStructure().size();
+        int n = solution.planningSize();
         int reversedLength;
         if (i < j) {
             reversedLength = j - i + 1;
@@ -49,8 +52,8 @@ public class CirclePlanning2OptMove implements Move<CirclePlanningSolution> {
             reversedLength = n - (i - j - 1);
         }
         int numSwaps = reversedLength / 2;
+        List<Person> children = new ArrayList<>(solution.getDeltaStructure().keySet());
         for (int k = 0; k < numSwaps; k++) {
-            List<Person> children = new ArrayList<>(solution.getDeltaStructure().keySet());
             solution.swapStepfamilies(children.get(c), start, stop);
             start = (start + 1) % n;
             stop = (stop - 1 + n) % n;

@@ -2,7 +2,8 @@ package be.atemi.decision.parentime;
 
 import be.atemi.decision.parentime.helper.PrettyPrinter;
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
-import be.atemi.decision.parentime.james.CirclePlanning;
+import be.atemi.decision.parentime.james.CirclePlanningBestSolution;
+import be.atemi.decision.parentime.james.valuetype.SearchAlgorithm;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.constraint.Constraint;
@@ -155,7 +156,8 @@ public class DummyParentime {
 
         Set<org.jamesframework.core.problems.constraints.Constraint> constraints = new HashSet<>();
 
-     //   constraints.add(new be.atemi.decision.parentime.james.constraint.hard.FullNightMorningConstraint());
+        constraints.add(new be.atemi.decision.parentime.james.constraint.hard.FullNightMorningConstraint());
+        constraints.add(new be.atemi.decision.parentime.james.constraint.hard.AvailabilityConstraint());
 
         return constraints;
 
@@ -196,14 +198,10 @@ public class DummyParentime {
          * Computation of the circle planning (VNS).
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningSolution result = CirclePlanning.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 10, 10);
+        BestCirclePlanningSolution result = CirclePlanningBestSolution.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
 
         PrettyPrinter.print(result, TIME_SLOTS, DAYS);
 
-        // print results
-//        if (result.getBestSolution() != null) {
-//            System.out.println();
-//        }
-
+        PrettyPrinter.toLatexFigure(result, TIME_SLOTS, DAYS);
     }
 }

@@ -13,8 +13,7 @@ public class CirclePlanning2OptNeighbourhood implements Neighbourhood<CirclePlan
 
     @Override
     public Move<? super CirclePlanningSolution> getRandomMove(CirclePlanningSolution solution, Random random) {
-
-        int n = solution.getDeltaStructure().size();
+        int n = solution.planningSize();
         int c = random.nextInt(solution.children().size());
         int i = random.nextInt(n);
         int j = random.nextInt(n - 1);

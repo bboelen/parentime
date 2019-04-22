@@ -1,7 +1,6 @@
 package be.atemi.decision.parentime.helper;
 
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
-import be.atemi.decision.parentime.james.CirclePlanningSolution;
 import be.atemi.decision.parentime.jenetics.StepfamilyChromosome;
 import be.atemi.decision.parentime.jenetics.StepfamilyGene;
 import be.atemi.decision.parentime.model.Person;
@@ -121,6 +120,58 @@ public final class PrettyPrinter {
                 outln("         ~");
             }
         });
+
+        outln("    \\caption{Solution possible du CFE}\\label{fig:cfe_ga_solution}");
+        outln("\\end{figure}");
+    }
+
+    public static void toLatexFigure(BestCirclePlanningSolution solution, int timeslots, int days) {
+
+        outln("\\begin{figure}[ht!]");
+        outln("    \\centering");
+
+        for (Person child : solution.getBestSolution().getDeltaStructure().keySet()) {
+
+            outln("    \\begin{subfigure}[b]{0.4\\textwidth}");
+            outln("         \\begin{tikzpicture} [nodes in empty cells, ");
+            outln("           nodes={minimum width=0.5cm, minimum height=0.5cm},");
+            outln("           row sep=-\\pgflinewidth, column sep=-\\pgflinewidth]");
+            outln("           border/.style={draw}");
+            outln("           \\matrix(vector)[matrix of nodes,");
+            outln("                row 1/.style={nodes={draw=none, minimum width=0.3cm}},");
+            outln("                nodes={draw}]");
+            outln("                {");
+
+
+            out("                   ");
+            for (int i = 0; i < days; i++) {
+                out("& ");
+            }
+
+            outln("\\\\");
+
+            for (int i = 0; i < timeslots; i++) {
+                out("                   ");
+                for (int j = 0; j < days; j++) {
+                    Stepfamily sf = solution.getBestSolution().getDeltaStructure().get(child).get(i + j * timeslots);
+                    out(stepfamilyColors.get(sf.getId()));
+                    out("$\\phi_" + (sf.getId() + 1) + "$");
+                    if (j < days - 1) out(" & ");
+                }
+                outln("\\\\");
+            }
+
+            outln("                };");
+            outln("         \\end{tikzpicture}");
+            outln("         \\caption{$\\chi_" + (child.getId() + 1) + " (" + child.getFirstName().substring(0, 1) + ")$}");
+            outln("         \\label{fig:cfe_ga_solution_" + child.getFirstName().substring(0, 1).toLowerCase() + "}");
+            outln("    \\end{subfigure}");
+
+
+            if (child.getId() < 3) {
+                outln("         ~");
+            }
+        }
 
         outln("    \\caption{Solution possible du CFE}\\label{fig:cfe_ga_solution}");
         outln("\\end{figure}");

@@ -1,5 +1,6 @@
 package be.atemi.decision.parentime.james;
 
+import be.atemi.decision.parentime.helper.PrettyPrinter;
 import be.atemi.decision.parentime.model.Person;
 import be.atemi.decision.parentime.model.Stepfamily;
 import org.jamesframework.core.problems.objectives.Objective;
@@ -19,7 +20,7 @@ public class CirclePlanningObjective implements Objective<CirclePlanningSolution
 
         double value = 0;
 
-        for (Map.Entry<Person, List<Stepfamily>> entry : solution.getDeltaStructure().entrySet()) {
+        for (Map.Entry<Person, StepfamilyPlanning> entry : solution.getDeltaStructure().entrySet()) {
 
             Stepfamily stepfamily = null;
 

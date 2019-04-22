@@ -1,16 +1,15 @@
 package be.atemi.decision.parentime.james;
 
 import be.atemi.decision.parentime.model.Person;
-import be.atemi.decision.parentime.model.Stepfamily;
 import org.jamesframework.core.problems.sol.Solution;
 
 import java.util.*;
 
 public class CirclePlanningSolution extends Solution {
 
-    private Map<Person, List<Stepfamily>> deltaStructure;
+    private Map<Person, StepfamilyPlanning> deltaStructure;
 
-    public CirclePlanningSolution(Map<Person, List<Stepfamily>> deltaStructure) {
+    public CirclePlanningSolution(Map<Person, StepfamilyPlanning> deltaStructure) {
         this.deltaStructure = deltaStructure;
     }
 
@@ -26,7 +25,7 @@ public class CirclePlanningSolution extends Solution {
     /**
      * @return days * timeslots size.
      */
-    public int size() {
+    public int planningSize() {
         Person first = deltaStructure.keySet().iterator().next();
         return deltaStructure.get(first) != null ? deltaStructure.get(first).size() : 0;
     }
@@ -35,7 +34,7 @@ public class CirclePlanningSolution extends Solution {
         Collections.swap(deltaStructure.get(child), i, j);
     }
 
-    public Map<Person, List<Stepfamily>> getDeltaStructure() {
+    public Map<Person, StepfamilyPlanning> getDeltaStructure() {
         return deltaStructure;
     }
 
@@ -54,5 +53,9 @@ public class CirclePlanningSolution extends Solution {
     @Override
     public int hashCode() {
         return Objects.hashCode(deltaStructure);
+    }
+
+    public void setDeltaStructure(Map<Person, StepfamilyPlanning> deltaStructure) {
+        this.deltaStructure = deltaStructure;
     }
 }
