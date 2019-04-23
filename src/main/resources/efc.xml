@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<circle name="crop circle">
+
+    <!-- Experimental Fictive Circle -->
+    <planning-config>
+        <days>7</days>
+        <timeslots>4</timeslots>
+    </planning-config>
+
+    <!-- Definition of persons -->
+    <persons>
+        <!-- Definition of children -->
+        <person id="D" firstName="Diomède" lastName="Spuckler" dob="2010-12-01"/>
+        <person id="E" firstName="Ezéchiel" lastName="Spuckler" dob="2011-12-01"/>
+        <person id="G" firstName="Gary" lastName="Melia" dob="2012-01-01"/>
+        <person id="H" firstName="Hadrien" lastName="Melia" dob="2014-01-03"/>
+        <!-- Definition of tutors -->
+        <person id="A" firstName="Ariane" lastName="Field" dob="1983-10-02"/>
+        <person id="B" firstName="Bakari" lastName="Constant" dob="1982-12-03"/>
+        <person id="C" firstName="Cleitus" lastName="Spuckler" dob="1981-11-05"/>
+        <person id="F" firstName="Fulvio" lastName="Melia" dob="1981-02-01"/>
+    </persons>
+
+    <!-- Definition of agendas -->
+    <agendas>
+        <agenda personId="A" name="flexible">
+            <entry day="0" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="1" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="4" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="5" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="6" timeslot="1">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="6" timeslot="2">FLEXIBLE_UNAVAILABILITY</entry>
+        </agenda>
+        <agenda personId="B" name="mixed">
+            <entry day="0" timeslot="1">FIXED_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="3">FIXED_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="2">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="3">FLEXIBLE_UNAVAILABILITY</entry>
+            <entry day="6" timeslot="2">FLEXIBLE_UNAVAILABILITY</entry>
+        </agenda>
+        <agenda personId="C" name="empty"/>
+        <agenda personId="F" name="fixed">
+            <entry day="0" timeslot="1">FIXED_UNAVAILABILITY</entry>
+            <entry day="0" timeslot="2">FIXED_UNAVAILABILITY</entry>
+            <entry day="0" timeslot="3">FIXED_UNAVAILABILITY</entry>
+            <entry day="1" timeslot="0">FIXED_UNAVAILABILITY</entry>
+            <entry day="1" timeslot="1">FIXED_UNAVAILABILITY</entry>
+            <entry day="1" timeslot="2">FIXED_UNAVAILABILITY</entry>
+            <entry day="1" timeslot="3">FIXED_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="0">FIXED_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="1">FIXED_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="2">FIXED_UNAVAILABILITY</entry>
+            <entry day="2" timeslot="3">FIXED_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="0">FIXED_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="1">FIXED_UNAVAILABILITY</entry>
+            <entry day="3" timeslot="2">FIXED_UNAVAILABILITY</entry>
+        </agenda>
+    </agendas>
+
+    <!-- Definition of parental links -->
+    <parental-links>
+        <tutor id="A">
+            <child id="D"/>
+            <child id="E"/>
+        </tutor>
+        <tutor id="B">
+            <child id="D"/>
+            <child id="E"/>
+        </tutor>
+        <tutor id="C">
+            <child id="G"/>
+            <child id="H"/>
+        </tutor>
+        <tutor id="F">
+            <child id="G"/>
+            <child id="H"/>
+        </tutor>
+    </parental-links>
+
+    <!-- Definition of stepfamilies -->
+    <stepfamilies>
+        <stepfamily name="phi 1">
+            <tutor id="A"/>
+            <tutor id="C"/>
+        </stepfamily>
+        <stepfamily name="phi 2">
+            <tutor id="B"/>
+        </stepfamily>
+        <stepfamily name="phi 3">
+            <tutor id="F"/>
+        </stepfamily>
+    </stepfamilies>
+
+</circle>

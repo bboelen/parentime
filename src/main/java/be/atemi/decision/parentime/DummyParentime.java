@@ -1,5 +1,6 @@
 package be.atemi.decision.parentime;
 
+import be.atemi.decision.parentime.helper.CircleFileReader;
 import be.atemi.decision.parentime.helper.PrettyPrinter;
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
 import be.atemi.decision.parentime.james.CirclePlanningBestSolution;
@@ -165,19 +166,21 @@ public class DummyParentime {
 
     public static void main(String... args) {
 
-        //geneticAlgorithmCompute();
-        variableNeighbourhoodSearchCompute();
+        Circle efc = CircleFileReader.getInstance().read("efc.xml");
+
+        //geneticAlgorithmCompute(efc);
+        variableNeighbourhoodSearchCompute(efc);
 
     }
 
-    private static void geneticAlgorithmCompute() {
+    private static void geneticAlgorithmCompute(Circle circle) {
 
         /**
          * ----------------------------------------------------------------
          * Computation of the circle planning (GA).
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(dummyCircle(), TIME_SLOTS, DAYS, geneticAlgorithmConstraints());
+        BestCirclePlanningGenotype result = CirclePlanningGenotype.compute(circle, geneticAlgorithmConstraints());
 
         System.out.println("--------------------> AvailabilityConstraint     MAX : " + AvailabilityConstraint.MAX);
         System.out.println("--------------------> FullNightMorningConstraint MAX : " + FullNightMorningConstraint.MAX);
@@ -186,22 +189,22 @@ public class DummyParentime {
 
         System.out.println(result.getStatistics());
 
-        PrettyPrinter.print(result.getGenotype(), TIME_SLOTS, DAYS);
+        PrettyPrinter.print(result.getGenotype(), circle.config().timeslots(), circle.config().days());
 
-        PrettyPrinter.toLatexFigure(result.getGenotype(), TIME_SLOTS, DAYS);
+        PrettyPrinter.toLatexFigure(result.getGenotype(), circle.config().timeslots(), circle.config().days());
     }
 
-    private static void variableNeighbourhoodSearchCompute() {
+    private static void variableNeighbourhoodSearchCompute(Circle circle) {
 
         /**
          * ----------------------------------------------------------------
          * Computation of the circle planning (VNS).
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningSolution result = CirclePlanningBestSolution.compute(dummyCircle(), DAYS, TIME_SLOTS, variableNeighbourhoodSearchConstraints(), 1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
+        BestCirclePlanningSolution result = CirclePlanningBestSolution.compute(circle, variableNeighbourhoodSearchConstraints(), 1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
 
-        PrettyPrinter.print(result, TIME_SLOTS, DAYS);
+        PrettyPrinter.print(result, circle.config().timeslots(), circle.config().days());
 
-        PrettyPrinter.toLatexFigure(result, TIME_SLOTS, DAYS);
+        PrettyPrinter.toLatexFigure(result, circle.config().timeslots(), circle.config().days());
     }
 }

@@ -71,6 +71,12 @@ public final class PrettyPrinter {
 
     public static void toLatexFigure(Genotype<StepfamilyGene> genotype, int timeslots, int days) {
 
+        outln("");
+        outln("################");
+        outln("# LATEX FIGURE #");
+        outln("################");
+        outln("");
+
         outln("\\begin{figure}[ht!]");
         outln("    \\centering");
 
@@ -126,6 +132,12 @@ public final class PrettyPrinter {
     }
 
     public static void toLatexFigure(BestCirclePlanningSolution solution, int timeslots, int days) {
+
+        outln("");
+        outln("################");
+        outln("# LATEX FIGURE #");
+        outln("################");
+        outln("");
 
         outln("\\begin{figure}[ht!]");
         outln("    \\centering");

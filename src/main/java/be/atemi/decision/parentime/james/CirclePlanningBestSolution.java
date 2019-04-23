@@ -24,19 +24,19 @@ import java.util.concurrent.TimeUnit;
 
 public final class CirclePlanningBestSolution {
 
-    public static BestCirclePlanningSolution compute(Circle circle, int days, int timeslots, Set<Constraint> constraints, int timeWithoutImprovementLimit, SearchAlgorithm algorithm, int maxShake) {
+    public static BestCirclePlanningSolution compute(Circle circle, Set<Constraint> constraints, int timeWithoutImprovementLimit, SearchAlgorithm algorithm, int maxShake) {
 
         System.out.println("# PROBLEM SPECIFICATION");
 
         // create data object
-        CirclePlanningData data = new CirclePlanningData(circle, days, timeslots);
+        CirclePlanningData data = new CirclePlanningData(circle, circle.config().days(), circle.config().timeslots());
         // create objective
         CirclePlanningObjective objective = new CirclePlanningObjective();
         // wrap in generic problem
         Problem<CirclePlanningSolution> problem = new GenericProblem<>(data, objective, RandomCirclePlanningSolutionGenerator.getInstance());
 
-        System.out.println("Number of days: " + days);
-        System.out.println("Number of timeslots: " + timeslots);
+        System.out.println("Number of days: " + circle.config().days());
+        System.out.println("Number of timeslots: " + circle.config().timeslots());
         System.out.println("Number of children: " + circle.children().size());
 
         // add constraints

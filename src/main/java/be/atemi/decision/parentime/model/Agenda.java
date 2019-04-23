@@ -60,6 +60,15 @@ public class Agenda implements Timable {
         public int value() {
             return internalValue;
         }
+
+        public static Entry from(String value) {
+            for (Entry e : values()) {
+                if (value.equals(e.toString())) {
+                    return e;
+                }
+            }
+            return null;
+        }
     }
 
     public int days() {

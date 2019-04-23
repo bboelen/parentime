@@ -14,6 +14,8 @@ public class Circle implements Serializable {
 
     private Set<Stepfamily> stepfamilies = new HashSet<>();
 
+    private Config config;
+
     private Circle(Integer id, String name) {
         this.id = id;
         this.name = name;
@@ -49,5 +51,13 @@ public class Circle implements Serializable {
         Set<Person> tutors = new HashSet<>();
         stepfamilies.forEach(stepfamily -> stepfamily.getTutors().forEach(person -> tutors.add(person)));
         return tutors;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
+    public Config config() {
+        return config;
     }
 }

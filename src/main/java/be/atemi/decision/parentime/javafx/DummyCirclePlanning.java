@@ -1,6 +1,7 @@
 package be.atemi.decision.parentime.javafx;
 
 import be.atemi.decision.parentime.DummyParentime;
+import be.atemi.decision.parentime.helper.CircleFileReader;
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
 import be.atemi.decision.parentime.james.CirclePlanningBestSolution;
 import be.atemi.decision.parentime.james.valuetype.SearchAlgorithm;
@@ -19,17 +20,16 @@ public class DummyCirclePlanning extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setTitle("Dummy Circle Planning [VNS]");
+        primaryStage.setTitle("Dummy Circle Planning");
 
-        Circle dummyCircle = DummyParentime.dummyCircle();
+        Circle dummyCircle = CircleFileReader.getInstance().read("efc.xml");
 
 //        BestCirclePlanningGenotype resultAG = CirclePlanningGenotype.compute(dummyCircle,
 //                DummyParentime.TIME_SLOTS, DummyParentime.DAYS, DummyParentime.geneticAlgorithmConstraints());
 //
 //        CirclePlanning planningGA = new ChromosomeCirclePlanning(resultAG.getGenotype(), dummyCircle.getStepfamilies());
 
-        BestCirclePlanningSolution resultVNS = CirclePlanningBestSolution.compute(dummyCircle,
-                DummyParentime.DAYS, DummyParentime.TIME_SLOTS, DummyParentime.variableNeighbourhoodSearchConstraints(),
+        BestCirclePlanningSolution resultVNS = CirclePlanningBestSolution.compute(dummyCircle, DummyParentime.variableNeighbourhoodSearchConstraints(),
                 1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
 
         CirclePlanning planningVNS = new SolutionCirclePlanning(resultVNS.getBestSolution(), dummyCircle.getStepfamilies());

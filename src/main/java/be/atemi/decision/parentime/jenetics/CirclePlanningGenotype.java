@@ -27,12 +27,12 @@ public final class CirclePlanningGenotype {
         return cost;
     }
 
-    public static BestCirclePlanningGenotype compute(Circle circle, int timeslots, int days, Set<Constraint> constraints) {
+    public static BestCirclePlanningGenotype compute(Circle circle, Set<Constraint> constraints) {
 
         constraintsSet = constraints;
 
         final Set<StepfamilyChromosome> chromosomes = circle.children().stream()
-                .map(child -> StepfamilyChromosome.of(child, timeslots, days)).collect(Collectors.toSet());
+                .map(child -> StepfamilyChromosome.of(child, circle.config().timeslots(), circle.config().days())).collect(Collectors.toSet());
 
         final Factory<Genotype<StepfamilyGene>> factory = Genotype.of(chromosomes);
 
