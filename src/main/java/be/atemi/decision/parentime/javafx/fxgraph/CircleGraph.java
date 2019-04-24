@@ -1,23 +1,33 @@
 package be.atemi.decision.parentime.javafx.fxgraph;
 
+import be.atemi.decision.parentime.helper.ColorGenerator;
 import be.atemi.decision.parentime.javafx.fxgraph.cells.ChildCell;
 import be.atemi.decision.parentime.javafx.fxgraph.cells.TutorCell;
+import be.atemi.decision.parentime.javafx.fxgraph.edges.TutorChildEdge;
+import be.atemi.decision.parentime.javafx.fxgraph.edges.TutorTurorEdge;
 import be.atemi.decision.parentime.model.Circle;
 import be.atemi.decision.parentime.model.Person;
-import com.fxgraph.edges.CorneredEdge;
-import com.fxgraph.edges.Edge;
+import be.atemi.decision.parentime.model.Stepfamily;
 import com.fxgraph.graph.Graph;
 import com.fxgraph.graph.ICell;
 import com.fxgraph.graph.Model;
 import com.fxgraph.layout.RandomLayout;
-import javafx.geometry.Orientation;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CircleGraph extends Graph {
 
+    private static Map<Stepfamily, String> stepfamilyColors = new HashMap<>();
+
     public CircleGraph(Circle circle) {
+
+        circle.getStepfamilies().forEach(stepfamily -> {
+            if (!stepfamilyColors.containsKey(stepfamily)) {
+                stepfamilyColors.put(stepfamily, ColorGenerator.get());
+            }
+        });
+        ColorGenerator.reset();
 
         final Model model = getModel();
 
@@ -27,54 +37,44 @@ public class CircleGraph extends Graph {
 
         circle.children().stream().forEach(child -> {
 
-            ICell c = new ChildCell(child.getLabel());
+            ICell c = new ChildCell(child.getFirstName());
             model.addCell(c);
 
             child.getParents().stream().forEach(parent -> {
+
                 if (!tutorNodes.containsKey(parent)) {
-                    tutorNodes.put(parent, new TutorCell(parent.getLabel()));
+                    tutorNodes.put(parent, new TutorCell(parent.getFirstName() + " " + parent.getLastName(), stepfamilyColors.get(parent.getStepfamily())));
+                    model.addCell(tutorNodes.get(parent));
                 }
 
-                System.out.println(child.getLabel() + " -- " + parent.getLabel());
-                CorneredEdge edge = new CorneredEdge(c, tutorNodes.get(parent), Orientation.HORIZONTAL);
+                TutorChildEdge edge = new TutorChildEdge(c, tutorNodes.get(parent));
                 model.addEdge(edge);
             });
         });
 
-//        final ICell cellA = new TutorCell("B");
-//        final ICell cellB = new TutorCell("B");
-//        final ICell cellC = new TutorCell("B");
-//        final ICell cellD = new ChildCell("A");
-//        final ICell cellE = new TutorCell("B");
-//        final ICell cellF = new TutorCell("B");
-//        final ICell cellG = new TutorCell("B");
+        circle.getStepfamilies().stream().forEach(stepfamily -> {
 
-//        model.addCell(cellA);
-//        model.addCell(cellB);
-//        model.addCell(cellC);
-//        model.addCell(cellD);
-//        model.addCell(cellE);
-//        model.addCell(cellF);
-//        model.addCell(cellG);
+            ICell first = null;
+            ICell current = null;
 
-//        final Edge edgeAB = new Edge(cellA, cellB);
-//
-//        edgeAB.textProperty().set("Edges can have text too!");
-//        model.addEdge(edgeAB);
-//        final CorneredEdge edgeAC = new CorneredEdge(cellA, cellC, Orientation.HORIZONTAL);
-//        edgeAC.textProperty().set("Edges can have corners too!");
-//        model.addEdge(edgeAC);
-//        model.addEdge(cellB, cellD);
-//        final DoubleCorneredEdge edgeBE = new DoubleCorneredEdge(cellB, cellE, Orientation.HORIZONTAL);
-//        edgeBE.textProperty().set("You can implement custom edges and nodes too!");
-//        model.addEdge(edgeBE);
-//        model.addEdge(cellC, cellF);
-//        model.addEdge(cellC, cellG);
+            for (Person tutor : stepfamily.getTutors()) {
+
+                if (first == null) {
+                    first = tutorNodes.get(tutor);
+                    current = tutorNodes.get(tutor);
+                } else if (first != null) {
+                    TutorTurorEdge edge = new TutorTurorEdge(current, tutorNodes.get(tutor));
+                    current = tutorNodes.get(tutor);
+                    model.addEdge(edge);
+                }
+            }
+
+            TutorTurorEdge edge = new TutorTurorEdge(current, first);
+            model.addEdge(edge);
+        });
 
         endUpdate();
 
         layout(new RandomLayout());
-
-
     }
 }

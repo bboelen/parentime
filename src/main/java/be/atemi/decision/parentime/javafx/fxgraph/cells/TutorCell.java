@@ -13,22 +13,27 @@ import javafx.scene.text.Font;
 public class TutorCell extends AbstractCell {
 
     private String text;
+    private String color;
 
-    public TutorCell(String text) {
+    public TutorCell(String text, String color) {
         this.text = text;
+        this.color = color;
     }
 
     @Override
     public Region getGraphic(Graph graph) {
-        Rectangle rectangle = new Rectangle(50.0D, 50.0D);
+        Rectangle rectangle = new Rectangle(100.0D, 100.0D);
         Label label = new Label(text);
         label.setFont(new Font(20));
+        label.setStyle(color);
+        label.setPrefWidth(100);
+        label.setPrefHeight(100);
         rectangle.setStroke(Color.BLACK);
         rectangle.setFill(Color.LIGHTGRAY);
         StackPane pane = new StackPane(new Node[]{rectangle, label});
-        pane.setPrefSize(50.0D, 50.0D);
-        rectangle.widthProperty().bind(pane.prefWidthProperty());
-        rectangle.heightProperty().bind(pane.prefHeightProperty());
+        pane.setPrefSize(100.0D, 100.0D);
+        rectangle.widthProperty().bind(pane.prefWidthProperty().divide(2));
+        rectangle.heightProperty().bind(pane.prefHeightProperty().divide(2));
         return pane;
     }
 }

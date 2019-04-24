@@ -21,13 +21,13 @@ public class ChildCell extends AbstractCell {
 
     @Override
     public Region getGraphic(Graph graph) {
-        Circle circle = new Circle(25.0D);
+        Circle circle = new Circle(50.0D);
         Label label = new Label(text);
         label.setFont(new Font(20));
         circle.setStroke(Color.BLACK);
         circle.setFill(Color.WHITE);
         StackPane pane = new StackPane(new Node[]{circle, label});
-        pane.setPrefSize(25.0D, 25.0D);
+        pane.setPrefSize(50.0D, 50.0D);
         circle.centerXProperty().bind(pane.widthProperty().divide(2));
         circle.centerYProperty().bind(pane.heightProperty().divide(2));
         return pane;

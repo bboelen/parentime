@@ -1,5 +1,6 @@
 package be.atemi.decision.parentime.javafx;
 
+import be.atemi.decision.parentime.helper.ColorGenerator;
 import be.atemi.decision.parentime.model.Stepfamily;
 import be.atemi.decision.parentime.model.Timable;
 
@@ -9,32 +10,10 @@ import java.util.Set;
 
 public abstract class CirclePlanning<T extends Timable> extends AbstractTimeGrid<T> {
 
-    private static final String[] COLORS = {
-            "-fx-background-color: gold;",
-            "-fx-background-color: dodgerblue;",
-            "-fx-background-color: indianred;",
-            "-fx-background-color: cadetblue;",
-            "-fx-background-color: lightsalmon;",
-            "-fx-background-color: aliceblue;",
-            "-fx-background-color: coral;",
-            "-fx-background-color: bisque;",
-            "-fx-background-color: darkslateblue;",
-            "-fx-background-color: darkturquoise;",
-            "-fx-background-color: darksalmon;",
-            "-fx-background-color: darkorange;",
-            "-fx-background-color: darkseagreen;",
-            "-fx-background-color: darkcyan;"};
-
-    private static int colorIndex = 0;
-
     protected static Map<Integer, String> stepfamilyColors = new HashMap<>();
 
     protected static void assignColors(Set<Stepfamily> stepfamilies) {
-        try {
-            stepfamilies.forEach(stepfamily -> stepfamilyColors.put(stepfamily.getId(), COLORS[colorIndex++]));
-            colorIndex = 0;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("There are not enough colors to assign! You must add more.");
-        }
+        stepfamilies.forEach(stepfamily -> stepfamilyColors.put(stepfamily.getId(), ColorGenerator.get()));
+        ColorGenerator.reset();
     }
 }
