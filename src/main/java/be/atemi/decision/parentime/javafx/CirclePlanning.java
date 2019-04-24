@@ -16,7 +16,14 @@ public abstract class CirclePlanning<T extends Timable> extends AbstractTimeGrid
             "-fx-background-color: cadetblue;",
             "-fx-background-color: lightsalmon;",
             "-fx-background-color: aliceblue;",
-            "-fx-background-color: coral;"};
+            "-fx-background-color: coral;",
+            "-fx-background-color: bisque;",
+            "-fx-background-color: darkslateblue;",
+            "-fx-background-color: darkturquoise;",
+            "-fx-background-color: darksalmon;",
+            "-fx-background-color: darkorange;",
+            "-fx-background-color: darkseagreen;",
+            "-fx-background-color: darkcyan;"};
 
     private static int colorIndex = 0;
 
@@ -25,6 +32,7 @@ public abstract class CirclePlanning<T extends Timable> extends AbstractTimeGrid
     protected static void assignColors(Set<Stepfamily> stepfamilies) {
         try {
             stepfamilies.forEach(stepfamily -> stepfamilyColors.put(stepfamily.getId(), COLORS[colorIndex++]));
+            colorIndex = 0;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("There are not enough colors to assign! You must add more.");
         }

@@ -11,7 +11,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class SolutionCirclePlanning extends CirclePlanning<StepfamilyPlanning> {
 
@@ -21,10 +23,12 @@ public class SolutionCirclePlanning extends CirclePlanning<StepfamilyPlanning> {
 
         TabPane tabs = new TabPane();
 
-        for (Person child : solution.getDeltaStructure().keySet()) {
+        Map<Person, StepfamilyPlanning> deltaStructure = new TreeMap<>(solution.getDeltaStructure());
+
+        for (Person child : deltaStructure.keySet()) {
             Tab tab = new Tab();
             tab.setText(child.getFirstName() + " " + child.getLastName());
-            tab.setContent(content(solution.getDeltaStructure().get(child)));
+            tab.setContent(content(deltaStructure.get(child)));
             tabs.getTabs().add(tab);
         }
 

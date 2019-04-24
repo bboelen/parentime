@@ -7,6 +7,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.Comparator;
+
 public class AgendaGrid extends AbstractTimeGrid<Agenda> {
 
     private static final String[] COLORS = {
@@ -18,7 +20,7 @@ public class AgendaGrid extends AbstractTimeGrid<Agenda> {
 
         TabPane tabs = new TabPane();
 
-        circle.tutors().forEach(p -> {
+        circle.tutors().stream().sorted(Comparator.comparing(t -> t.getFirstName() + " " + t.getLastName())).forEach(p -> {
             Tab tab = new Tab();
             tab.setText(p.getFirstName() + " " + p.getLastName());
             tab.setContent(content(p.getAgenda()));

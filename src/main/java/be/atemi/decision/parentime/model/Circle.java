@@ -8,6 +8,8 @@ public class Circle implements Serializable {
 
     private static int cursor = 0;
 
+    private String label;
+
     private Integer id;
 
     private String name;
@@ -19,6 +21,14 @@ public class Circle implements Serializable {
     private Circle(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public Integer getId() {

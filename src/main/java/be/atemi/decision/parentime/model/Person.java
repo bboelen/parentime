@@ -6,7 +6,7 @@ import org.joda.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Person {
+public class Person implements Comparable {
 
     private static int cursor = 0;
 
@@ -29,6 +29,8 @@ public class Person {
 
     private Agenda agenda;
 
+    private String label;
+
     private Person(Integer id, String firstName, String lastName, LocalDate dateOfBirth) {
         this.id = id;
         this.firstName = firstName;
@@ -45,6 +47,14 @@ public class Person {
         for (Person child : children) {
             addChild(child);
         }
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public int getAge() {
@@ -111,5 +121,10 @@ public class Person {
 
     public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return (this.firstName + " " + this.lastName).compareTo(((Person) o).firstName + " " + ((Person) o).lastName);
     }
 }

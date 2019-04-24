@@ -73,6 +73,7 @@ public final class CircleFileReader {
                 String lastName = person.getAttribute("lastName");
                 String dob = person.getAttribute("dob");
                 Person p = Person.newInstance(firstName, lastName, LocalDate.parse(dob));
+                p.setLabel(id);
                 personsMap.put(id, p);
                 System.out.println("- person " + id + ": " + firstName + " " + lastName + " (" + dob + ")");
             }

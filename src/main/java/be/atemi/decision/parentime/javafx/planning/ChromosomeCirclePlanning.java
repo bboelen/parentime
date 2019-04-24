@@ -10,8 +10,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Comparator;
 import java.util.Set;
 
 public class ChromosomeCirclePlanning extends CirclePlanning<StepfamilyChromosome> {
@@ -22,7 +21,7 @@ public class ChromosomeCirclePlanning extends CirclePlanning<StepfamilyChromosom
 
         TabPane tabs = new TabPane();
 
-        genotype.forEach(chromosome -> {
+        genotype.toSeq().stream().sorted(Comparator.comparing(c -> c.as(StepfamilyChromosome.class).child().getFirstName() + " " + c.as(StepfamilyChromosome.class).child().getLastName())).forEach(chromosome -> {
             StepfamilyChromosome c = chromosome.as(StepfamilyChromosome.class);
             Tab tab = new Tab();
             tab.setText(c.child().getFirstName() + " " + c.child().getLastName());

@@ -5,6 +5,7 @@ import be.atemi.decision.parentime.helper.CircleFileReader;
 import be.atemi.decision.parentime.james.BestCirclePlanningSolution;
 import be.atemi.decision.parentime.james.CirclePlanningBestSolution;
 import be.atemi.decision.parentime.james.valuetype.SearchAlgorithm;
+import be.atemi.decision.parentime.javafx.fxgraph.CircleGraph;
 import be.atemi.decision.parentime.javafx.planning.ChromosomeCirclePlanning;
 import be.atemi.decision.parentime.javafx.planning.SolutionCirclePlanning;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
@@ -40,8 +41,9 @@ import javafx.stage.Stage;
 public class Parentime extends Application {
 
     VBox dataBox = new VBox();
-    CirclePlanning planningVNS;
-    CirclePlanning planningGA;
+    VBox planningVNS;
+    VBox planningGA;
+    VBox agendaBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -58,11 +60,13 @@ public class Parentime extends Application {
 
         border.setCenter(addRelationGraphBox(circle));
 
-        dataBox.getChildren().add(addAgendaBox(circle));
+        agendaBox = addAgendaBox(circle);
+
+        dataBox.getChildren().add(agendaBox);
 
         border.setRight(dataBox);
 
-        primaryStage.setScene(new Scene(border));
+        primaryStage.setScene(new Scene(border, 1500, 800));
         primaryStage.show();
 
     }
@@ -76,30 +80,24 @@ public class Parentime extends Application {
         Button buttonOpen = new Button("Open...");
         buttonOpen.setPrefSize(100, 20);
 
-        Button buttonVNS = new Button("VNS");
-        buttonVNS.setPrefSize(100, 20);
-        buttonVNS.setOnMouseClicked(event -> {
+        Button buttonCompute = new Button("Compute");
+        buttonCompute.setPrefSize(100, 20);
+        buttonCompute.setOnMouseClicked(event -> {
+
+            dataBox.getChildren().clear();
+            dataBox.getChildren().add(agendaBox);
 
             BestCirclePlanningSolution resultVNS = CirclePlanningBestSolution.compute(circle, DummyParentime.variableNeighbourhoodSearchConstraints(),
                     1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
-
-            planningVNS = new SolutionCirclePlanning(resultVNS.getBestSolution(), circle.getStepfamilies());
-
+            planningVNS = addPlanning("Plannings (VNS)", new SolutionCirclePlanning(resultVNS.getBestSolution(), circle.getStepfamilies()));
             dataBox.getChildren().add(planningVNS);
-        });
-
-        Button buttonGA = new Button("GA");
-        buttonGA.setPrefSize(100, 20);
-        buttonGA.setOnMouseClicked(event -> {
 
             BestCirclePlanningGenotype resultAG = CirclePlanningGenotype.compute(circle, DummyParentime.geneticAlgorithmConstraints());
-
-            planningGA = new ChromosomeCirclePlanning(resultAG.getGenotype(), circle.getStepfamilies());
-
+            planningGA = addPlanning("Plannings (GA)", new ChromosomeCirclePlanning(resultAG.getGenotype(), circle.getStepfamilies()));
             dataBox.getChildren().add(planningGA);
         });
 
-        hbox.getChildren().addAll(buttonOpen, buttonVNS, buttonGA);
+        hbox.getChildren().addAll(buttonOpen, buttonCompute);
 
         return hbox;
     }
@@ -133,43 +131,7 @@ public class Parentime extends Application {
 
         VBox vbox = new VBox();
 
-        Graph graph = new Graph();
-        final Model model = graph.getModel();
-
-        graph.beginUpdate();
-
-        final ICell cellA = new RectangleCell();
-        final ICell cellB = new RectangleCell();
-        final ICell cellC = new RectangleCell();
-        final ICell cellD = new TriangleCell();
-        final ICell cellE = new TriangleCell();
-        final ICell cellF = new RectangleCell();
-        final ICell cellG = new RectangleCell();
-
-        model.addCell(cellA);
-        model.addCell(cellB);
-        model.addCell(cellC);
-        model.addCell(cellD);
-        model.addCell(cellE);
-        model.addCell(cellF);
-        model.addCell(cellG);
-
-        final Edge edgeAB = new Edge(cellA, cellB);
-        edgeAB.textProperty().set("Edges can have text too!");
-        model.addEdge(edgeAB);
-        final CorneredEdge edgeAC = new CorneredEdge(cellA, cellC, Orientation.HORIZONTAL);
-        edgeAC.textProperty().set("Edges can have corners too!");
-        model.addEdge(edgeAC);
-        model.addEdge(cellB, cellD);
-        final DoubleCorneredEdge edgeBE = new DoubleCorneredEdge(cellB, cellE, Orientation.HORIZONTAL);
-        edgeBE.textProperty().set("You can implement custom edges and nodes too!");
-        model.addEdge(edgeBE);
-        model.addEdge(cellC, cellF);
-        model.addEdge(cellC, cellG);
-
-        graph.endUpdate();
-
-        graph.layout(new RandomLayout());
+        Graph graph = new CircleGraph(circle);
 
         vbox.getChildren().add(graph.getCanvas());
 
@@ -192,6 +154,21 @@ public class Parentime extends Application {
 
         return vbox;
 
+    }
+
+    public VBox addPlanning(String text, CirclePlanning planning) {
+
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(8);
+
+        Text title = new Text(text);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+        vbox.getChildren().add(title);
+        vbox.getChildren().add(planning);
+
+        return vbox;
     }
 
     public FlowPane addFlowPane() {
