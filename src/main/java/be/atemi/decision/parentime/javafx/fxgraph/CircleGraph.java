@@ -5,6 +5,7 @@ import be.atemi.decision.parentime.javafx.fxgraph.cells.ChildCell;
 import be.atemi.decision.parentime.javafx.fxgraph.cells.TutorCell;
 import be.atemi.decision.parentime.javafx.fxgraph.edges.TutorChildEdge;
 import be.atemi.decision.parentime.javafx.fxgraph.edges.TutorTurorEdge;
+import be.atemi.decision.parentime.javafx.fxgraph.layout.CircularLayout;
 import be.atemi.decision.parentime.model.Circle;
 import be.atemi.decision.parentime.model.Person;
 import be.atemi.decision.parentime.model.Stepfamily;
@@ -75,6 +76,6 @@ public class CircleGraph extends Graph {
 
         endUpdate();
 
-        layout(new RandomLayout());
+        layout(new CircularLayout());
     }
 }

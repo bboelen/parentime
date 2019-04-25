@@ -11,22 +11,13 @@ import be.atemi.decision.parentime.javafx.planning.SolutionCirclePlanning;
 import be.atemi.decision.parentime.jenetics.BestCirclePlanningGenotype;
 import be.atemi.decision.parentime.jenetics.CirclePlanningGenotype;
 import be.atemi.decision.parentime.model.Circle;
-import com.fxgraph.cells.RectangleCell;
-import com.fxgraph.cells.TriangleCell;
-import com.fxgraph.edges.CorneredEdge;
-import com.fxgraph.edges.DoubleCorneredEdge;
-import com.fxgraph.edges.Edge;
 import com.fxgraph.graph.Graph;
-import com.fxgraph.graph.ICell;
-import com.fxgraph.graph.Model;
-import com.fxgraph.layout.RandomLayout;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -36,64 +27,80 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.io.File;
 
 public class Parentime extends Application {
 
-    VBox dataBox = new VBox();
-    VBox planningVNS;
-    VBox planningGA;
-    VBox agendaBox;
+    private Desktop desktop = Desktop.getDesktop();
+    public static Circle circle;
+    private String filename;
+
+    private VBox dataBox = new VBox();
+    private VBox planningVNS;
+    private VBox planningGA;
+    private VBox agendaBox;
+
+    private BorderPane border;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        circle = CircleFileReader.getInstance().read("efc.xml");
+
+        filename = "efc.xml";
+
         primaryStage.setTitle("Parentime");
 
-        Circle circle = CircleFileReader.getInstance().read("efc.xml");
-
-        BorderPane border = new BorderPane();
-        HBox hbox = addHBox(circle);
+        border = new BorderPane();
+        HBox hbox = addToolBox(primaryStage);
         border.setTop(hbox);
-        //border.setLeft(addRelationGraphBox(circle));
-        addStackPane(hbox);         // Add stack to HBox in top region
+        addStackPane(hbox);
 
         border.setCenter(addRelationGraphBox(circle));
-
         agendaBox = addAgendaBox(circle);
-
         dataBox.getChildren().add(agendaBox);
-
         border.setRight(dataBox);
 
         primaryStage.setScene(new Scene(border, 1500, 800));
         primaryStage.show();
-
     }
 
-    public HBox addHBox(Circle circle) {
+    public HBox addToolBox(Stage primaryStage) {
+
+        FileChooser fileChooser = new FileChooser();
+
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
         hbox.setStyle("-fx-background-color: #336699;");
 
-        Button buttonOpen = new Button("Open...");
+        Button buttonOpen = new Button("Open a circle...");
         buttonOpen.setPrefSize(100, 20);
+        buttonOpen.setOnAction(event -> {
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                openCircle(file);
+            }
+        });
 
-        Button buttonCompute = new Button("Compute");
+        Button buttonCompute = new Button("Compute...");
         buttonCompute.setPrefSize(100, 20);
         buttonCompute.setOnMouseClicked(event -> {
 
             dataBox.getChildren().clear();
             dataBox.getChildren().add(agendaBox);
 
-            BestCirclePlanningSolution resultVNS = CirclePlanningBestSolution.compute(circle, DummyParentime.variableNeighbourhoodSearchConstraints(),
+            BestCirclePlanningSolution resultVNS = CirclePlanningBestSolution.compute(Parentime.circle, DummyParentime.variableNeighbourhoodSearchConstraints(),
                     1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
-            planningVNS = addPlanning("Plannings (VNS)", new SolutionCirclePlanning(resultVNS.getBestSolution(), circle.getStepfamilies()));
+            planningVNS = addPlanning("Plannings (VNS)", new SolutionCirclePlanning(resultVNS.getBestSolution(), Parentime.circle.getStepfamilies()));
             dataBox.getChildren().add(planningVNS);
 
-            BestCirclePlanningGenotype resultAG = CirclePlanningGenotype.compute(circle, DummyParentime.geneticAlgorithmConstraints());
-            planningGA = addPlanning("Plannings (GA)", new ChromosomeCirclePlanning(resultAG.getGenotype(), circle.getStepfamilies()));
+            BestCirclePlanningGenotype resultAG = CirclePlanningGenotype.compute(Parentime.circle, DummyParentime.geneticAlgorithmConstraints());
+            planningGA = addPlanning("Plannings (GA)", new ChromosomeCirclePlanning(resultAG.getGenotype(), Parentime.circle.getStepfamilies()));
             dataBox.getChildren().add(planningGA);
         });
 
@@ -129,12 +136,13 @@ public class Parentime extends Application {
 
     public VBox addRelationGraphBox(Circle circle) {
 
+        Text title = new Text(filename);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
         VBox vbox = new VBox();
-
         Graph graph = new CircleGraph(circle);
-
+        vbox.getChildren().add(title);
         vbox.getChildren().add(graph.getCanvas());
-
         return vbox;
     }
 
@@ -171,24 +179,21 @@ public class Parentime extends Application {
         return vbox;
     }
 
-    public FlowPane addFlowPane() {
+    private void openCircle(File file) {
 
+        circle = CircleFileReader.getInstance().read(file);
 
-        FlowPane flow = new FlowPane();
-        flow.setPadding(new Insets(5, 0, 5, 0));
-        flow.setVgap(4);
-        flow.setHgap(4);
-        flow.setPrefWrapLength(170); // preferred width allows for two columns
-        flow.setStyle("-fx-background-color: DAE6F3;");
+        filename = file.getPath();
 
-        ImageView pages[] = new ImageView[8];
-//        for (int i=0; i<8; i++) {
-//            pages[i] = new ImageView(
-//                    new Image(Parentime.class.getResourceAsStream(
-//                            "graphics/chart_"+(i+1)+".png")));
-//            flow.getChildren().add(pages[i]);
-//        }
+        if(agendaBox != null) {
+            agendaBox.getChildren().clear();
+        }
 
-        return flow;
+        dataBox.getChildren().clear();
+
+        border.setCenter(addRelationGraphBox(circle));
+        agendaBox = addAgendaBox(circle);
+        dataBox.getChildren().add(agendaBox);
+        border.setRight(dataBox);
     }
 }

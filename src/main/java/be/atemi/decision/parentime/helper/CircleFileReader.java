@@ -25,19 +25,17 @@ public final class CircleFileReader {
     private CircleFileReader() {
     }
 
-    public Circle read(String filePath) {
+    public Circle read(File file) {
 
         Circle circle = null;
 
         try {
 
-            System.out.println("reading the " + filePath + " file ...");
+            System.out.println("reading the " + file.getName() + " file ...");
 
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
 
-            URL url = getClass().getResource("/" + filePath);
-            File file = Paths.get(url.toURI()).toFile();
             final Document document = builder.parse(file);
 
             System.out.println("- version: " + document.getXmlVersion());
@@ -166,6 +164,25 @@ public final class CircleFileReader {
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();
+        }
+
+        return circle;
+
+    }
+
+    public Circle read(String filePath) {
+
+        Circle circle = null;
+
+        try {
+
+            System.out.println("reading the " + filePath + " file ...");
+
+            URL url = getClass().getResource("/" + filePath);
+            File file = Paths.get(url.toURI()).toFile();
+
+            circle = read(file);
+
         } catch (final URISyntaxException e) {
             e.printStackTrace();
         }
