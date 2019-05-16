@@ -10,22 +10,27 @@ public class ProgressSearchListener implements SearchListener<Solution> {
 
     private String name;
 
+    private long startTime;
+    private long endTime;
+
     public ProgressSearchListener(String name) {
         this.name = name;
     }
 
     public void searchStarted(Search search) {
+        startTime = System.nanoTime();
         System.out.println(" >>> Search started [" + name + "]");
     }
 
     public void searchStopped(Search search) {
-        System.out.println(" >>> Search stopped (" + search.getRuntime() / 1000 + " sec, " + search.getSteps() + "  steps)  [" + name + "]");
+        endTime = System.nanoTime();
+        System.out.println(" >>> Search stopped (" + search.getRuntime() / 1000 + " sec, " + search.getSteps() + "  steps)  [" + name + "] - duration : " + (endTime - startTime) / 1000000 + " ms.");
     }
 
     public void newBestSolution(Search search,
                                 Solution newBestSolution,
                                 Evaluation newBestSolutionEvaluation,
                                 Validation newBestSolutionValidation) {
-        System.out.println(" >>> New best solution: " + newBestSolutionEvaluation + "[" + name + "]");
+        System.out.println(" >>> New best solution: " + newBestSolutionEvaluation + "[" + name + "] - after " + (System.nanoTime() - startTime) / 1000000 + " ms.");
     }
 }

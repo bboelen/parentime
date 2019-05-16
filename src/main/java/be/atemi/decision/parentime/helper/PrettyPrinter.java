@@ -10,6 +10,7 @@ import io.jenetics.Genotype;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public final class PrettyPrinter {
 
@@ -49,7 +50,7 @@ public final class PrettyPrinter {
     }
 
     public static void print(BestCirclePlanningSolution solution, int timeslots, int days) {
-        for (Person child : solution.getBestSolution().getDeltaStructure().keySet()) {
+        solution.getBestSolution().getDeltaStructure().keySet().stream().sorted(Comparator.comparingLong(c -> c.getId())).forEach(child -> {
             cr();
             System.out.println(String.format(" * custody schedule for %s %s", child.getFirstName(), child.getLastName()));
             cr();
@@ -66,7 +67,7 @@ public final class PrettyPrinter {
                 }
                 cr();
             }
-        }
+        });
     }
 
     public static void toLatexFigure(Genotype<StepfamilyGene> genotype, int timeslots, int days) {
@@ -142,7 +143,7 @@ public final class PrettyPrinter {
         outln("\\begin{figure}[ht!]");
         outln("    \\centering");
 
-        for (Person child : solution.getBestSolution().getDeltaStructure().keySet()) {
+        solution.getBestSolution().getDeltaStructure().keySet().stream().sorted(Comparator.comparingLong(c -> c.getId())).forEach(child -> {
 
             outln("    \\begin{subfigure}[b]{0.4\\textwidth}");
             outln("         \\begin{tikzpicture} [nodes in empty cells, ");
@@ -183,8 +184,10 @@ public final class PrettyPrinter {
             if (child.getId() < 3) {
                 outln("         ~");
             }
-        }
+        });
 
+
+        outln("         ~");
         outln("    \\caption{Solution possible du CFE}\\label{fig:cfe_ga_solution}");
         outln("\\end{figure}");
     }

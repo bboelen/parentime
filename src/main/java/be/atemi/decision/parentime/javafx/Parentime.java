@@ -49,9 +49,9 @@ public class Parentime extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        circle = CircleFileReader.getInstance().read("efc.xml");
+       // circle = CircleFileReader.getInstance().read("efc.xml");
 
-        filename = "efc.xml";
+       // filename = "efc.xml";
 
         primaryStage.setTitle("Parentime");
 
@@ -60,10 +60,10 @@ public class Parentime extends Application {
         border.setTop(hbox);
         addStackPane(hbox);
 
-        border.setCenter(addRelationGraphBox(circle));
-        agendaBox = addAgendaBox(circle);
-        dataBox.getChildren().add(agendaBox);
-        border.setRight(dataBox);
+      //  border.setCenter(addRelationGraphBox(circle));
+      //  agendaBox = addAgendaBox(circle);
+      //  dataBox.getChildren().add(agendaBox);
+      //  border.setRight(dataBox);
 
         primaryStage.setScene(new Scene(border, 1500, 800));
         primaryStage.show();

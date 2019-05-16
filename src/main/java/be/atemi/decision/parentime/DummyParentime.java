@@ -201,7 +201,7 @@ public class DummyParentime {
          * Computation of the circle planning (VNS).
          * ----------------------------------------------------------------
          */
-        BestCirclePlanningSolution result = CirclePlanningBestSolution.compute(circle, variableNeighbourhoodSearchConstraints(), 1, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
+        BestCirclePlanningSolution result = CirclePlanningBestSolution.compute(circle, variableNeighbourhoodSearchConstraints(), 10, SearchAlgorithm.VARIABLE_NEIGHBOURHOOD_SEARCH, 10);
 
         PrettyPrinter.print(result, circle.config().timeslots(), circle.config().days());
 

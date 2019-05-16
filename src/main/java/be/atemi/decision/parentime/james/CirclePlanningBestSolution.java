@@ -5,7 +5,6 @@ import be.atemi.decision.parentime.james.neighbourhood.CirclePlanning2OptNeighbo
 import be.atemi.decision.parentime.james.neighbourhood.CirclePlanningRandomNeighbourhood;
 import be.atemi.decision.parentime.james.valuetype.SearchAlgorithm;
 import be.atemi.decision.parentime.model.Circle;
-import org.jamesframework.core.factory.LocalSearchFactory;
 import org.jamesframework.core.problems.GenericProblem;
 import org.jamesframework.core.problems.Problem;
 import org.jamesframework.core.problems.constraints.Constraint;
@@ -15,6 +14,7 @@ import org.jamesframework.core.search.algo.RandomDescent;
 import org.jamesframework.core.search.algo.vns.VariableNeighbourhoodSearch;
 import org.jamesframework.core.search.neigh.Neighbourhood;
 import org.jamesframework.core.search.stopcriteria.MaxTimeWithoutImprovement;
+import org.jamesframework.ext.analysis.Analysis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,10 @@ public final class CirclePlanningBestSolution {
         CirclePlanningObjective objective = new CirclePlanningObjective();
         // wrap in generic problem
         Problem<CirclePlanningSolution> problem = new GenericProblem<>(data, objective, RandomCirclePlanningSolutionGenerator.getInstance());
+        // initialize analysis object
+        Analysis<CirclePlanningSolution> analysis = new Analysis<>();
+        // adding problem to analysis
+        analysis.addProblem("CFE", problem);
 
         System.out.println("Number of days: " + circle.config().days());
         System.out.println("Number of timeslots: " + circle.config().timeslots());
