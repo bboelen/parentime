@@ -6,7 +6,7 @@ Parentime is a proof of concept application designed for the management of alter
 
 ### 1. Constraint Definition and Encoding:
 - Hard and Soft Constraints: The application incorporates both hard and soft constraints to ensure flexibility and adaptability in creating custody schedules.
-- CFE and Its Constraints: The CFE (not defined in the extracted text) is encoded in JSON format, indicating a structured approach to handling complex data and constraints.
+- CFE and Its Constraints: The CFE is encoded in JSON format, indicating a structured approach to handling complex data and constraints.
 ### 2. Problem Modeling and Optimization:
 - Constraint Programming: The application employs constraint programming, a key technique in artificial intelligence, to model and solve the custody scheduling problem.
 - Metaheuristics: It also utilizes metaheuristics for optimization, ensuring efficient and effective solutions.
