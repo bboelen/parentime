@@ -28,6 +28,22 @@ Parentime is a proof of concept application designed for the management of alter
 - Visualization: With features like the PrettyPrinter utility class, users can visualize the custody schedules, making them easy to understand and follow.
 - Optimization: The application employs advanced optimization techniques, including variable neighborhood search and metaheuristics, to ensure that the custody schedules are not only feasible but also optimized for the involved parties.
 
+## Construction and Execution
+
+Parentime is a Maven 3 project composed of various libraries. To use the application, the first step is to build the project using the following command (within the parentime directory):
+
+``` bash
+$ mvn package
+```
+
+The project's pom.xml file is configured to create a jar archive without dependencies, as well as another archive containing all the necessary dependencies for launching the project: this is the parentime-jar-with-dependencies.jar file. To run the application, simply execute the following command from the shell.
+
+``` bash
+$ java -jar parentime-jar-with-dependencies.jar
+```
+
+Although it is a self-executable jar file that can be launched with a simple double-click, it is strongly advised to use the application while continuing to view the console. Indeed, numerous information about the problem-solving process is displayed in real time on the standard output and allows, among other things, to visualize the behavior of the different algorithms.
+
 ## Conclusion
 
 Parentime is a Proof of Concept (POC) designed to address the intricate and dynamic nature of managing alternating parental custody schedules. It encapsulates a blend of advanced artificial intelligence and optimization techniques to ensure the creation of feasible and optimized custody schedules, considering all legal and personal constraints.
